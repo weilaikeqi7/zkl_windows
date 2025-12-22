@@ -10,6 +10,12 @@
 extern "C" {
 #endif
 
+void ui_comp_cmpdatetimebar_create_hook(lv_obj_t * comp);
+void ui_comp_cmpfocuscell_create_hook(lv_obj_t * comp);
+void ui_comp_cmpmodetoggle_create_hook(lv_obj_t * comp);
+void ui_comp_cmptableheader_create_hook(lv_obj_t * comp);
+void ui_comp_cmptablerow4col_create_hook(lv_obj_t * comp);
+void ui_comp_div__create_hook(lv_obj_t * comp);
 void ui_comp_paneleg_create_hook(lv_obj_t * comp);
 void ui_comp_rowenter_create_hook(lv_obj_t * comp);
 void ui_comp_rowlabel_create_hook(lv_obj_t * comp);

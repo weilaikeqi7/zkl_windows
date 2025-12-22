@@ -55,18 +55,17 @@ lv_obj_t * ui_rowimagemode = NULL;
 lv_obj_t * ui_rowbrightness = NULL;
 lv_obj_t * ui_rowcontrast = NULL;
 lv_obj_t * ui_rowsharpness = NULL;
-lv_obj_t * ui_rowbgreflesh = NULL;
 lv_obj_t * ui_rowultraclear = NULL;
-lv_obj_t * ui_contpage2 = NULL;
 lv_obj_t * ui_rowpip = NULL;
+lv_obj_t * ui_contpage2 = NULL;
 lv_obj_t * ui_rowwifi = NULL;
 lv_obj_t * ui_rowtilt = NULL;
 lv_obj_t * ui_rowcompass = NULL;
 lv_obj_t * ui_rowreticle = NULL;
 lv_obj_t * ui_rowballistic = NULL;
 lv_obj_t * ui_rowmic = NULL;
-lv_obj_t * ui_contpage3 = NULL;
 lv_obj_t * ui_rowrav = NULL;
+lv_obj_t * ui_contpage3 = NULL;
 lv_obj_t * ui_rowstandby = NULL;
 lv_obj_t * ui_rowcompasscalibration = NULL;
 lv_obj_t * ui_rowdeadpixel = NULL;
@@ -544,16 +543,6 @@ void ui_MainPage_screen_init(void)
 
     lv_label_set_text(ui_comp_get_child(ui_rowsharpness, UI_COMP_ROWLABEL_CONTPILL1_ITEMLABEL1), "1");
 
-    ui_rowbgreflesh = ui_rowlabel_create(ui_contpage1);
-    lv_obj_set_x(ui_rowbgreflesh, 0);
-    lv_obj_set_y(ui_rowbgreflesh, 0);
-
-    lv_image_set_src(ui_comp_get_child(ui_rowbgreflesh, UI_COMP_ROWLABEL_IMGICON1), &ui_img_img_backgroundreflesh_png);
-
-    lv_image_set_src(ui_comp_get_child(ui_rowbgreflesh, UI_COMP_ROWLABEL_SPACER1), &ui_img_img_dots_png);
-
-    lv_label_set_text(ui_comp_get_child(ui_rowbgreflesh, UI_COMP_ROWLABEL_CONTPILL1_ITEMLABEL1), "30 HZ");
-
     ui_rowultraclear = ui_rowswitch_create(ui_contpage1);
     lv_obj_set_x(ui_rowultraclear, 0);
     lv_obj_set_y(ui_rowultraclear, 0);
@@ -561,6 +550,14 @@ void ui_MainPage_screen_init(void)
     lv_image_set_src(ui_comp_get_child(ui_rowultraclear, UI_COMP_ROWSWITCH_IMGICON), &ui_img_img_ultraclear_png);
 
     lv_image_set_src(ui_comp_get_child(ui_rowultraclear, UI_COMP_ROWSWITCH_SPACER), &ui_img_img_dots_png);
+
+    ui_rowpip = ui_rowswitch_create(ui_contpage1);
+    lv_obj_set_x(ui_rowpip, 0);
+    lv_obj_set_y(ui_rowpip, 0);
+
+    lv_image_set_src(ui_comp_get_child(ui_rowpip, UI_COMP_ROWSWITCH_IMGICON), &ui_img_img_pip_png);
+
+    lv_image_set_src(ui_comp_get_child(ui_rowpip, UI_COMP_ROWSWITCH_SPACER), &ui_img_img_dots_png);
 
     ui_contpage2 = ui_paneleg_create(ui_contpages);
     lv_obj_set_width(ui_contpage2, lv_pct(100));
@@ -573,14 +570,6 @@ void ui_MainPage_screen_init(void)
     lv_obj_add_flag(ui_contpage2, LV_OBJ_FLAG_HIDDEN);     /// Flags
     lv_obj_set_style_pad_row(ui_contpage2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_contpage2, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_rowpip = ui_rowswitch_create(ui_contpage2);
-    lv_obj_set_x(ui_rowpip, 0);
-    lv_obj_set_y(ui_rowpip, 0);
-
-    lv_image_set_src(ui_comp_get_child(ui_rowpip, UI_COMP_ROWSWITCH_IMGICON), &ui_img_img_pip_png);
-
-    lv_image_set_src(ui_comp_get_child(ui_rowpip, UI_COMP_ROWSWITCH_SPACER), &ui_img_img_dots_png);
 
     ui_rowwifi = ui_rowswitch_create(ui_contpage2);
     lv_obj_set_x(ui_rowwifi, 0);
@@ -632,6 +621,14 @@ void ui_MainPage_screen_init(void)
 
     lv_image_set_src(ui_comp_get_child(ui_rowmic, UI_COMP_ROWSWITCH_SPACER), &ui_img_img_dots_png);
 
+    ui_rowrav = ui_rowswitch_create(ui_contpage2);
+    lv_obj_set_x(ui_rowrav, 0);
+    lv_obj_set_y(ui_rowrav, 0);
+
+    lv_image_set_src(ui_comp_get_child(ui_rowrav, UI_COMP_ROWSWITCH_IMGICON), &ui_img_img_ravrecording_png);
+
+    lv_image_set_src(ui_comp_get_child(ui_rowrav, UI_COMP_ROWSWITCH_SPACER), &ui_img_img_dots_png);
+
     ui_contpage3 = ui_paneleg_create(ui_contpages);
     lv_obj_set_width(ui_contpage3, lv_pct(100));
     lv_obj_set_height(ui_contpage3, lv_pct(100));
@@ -640,16 +637,9 @@ void ui_MainPage_screen_init(void)
     lv_obj_set_align(ui_contpage3, LV_ALIGN_TOP_LEFT);
     lv_obj_set_flex_flow(ui_contpage3, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(ui_contpage3, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_START);
+    lv_obj_remove_flag(ui_contpage3, LV_OBJ_FLAG_HIDDEN);      /// Flags
     lv_obj_set_style_pad_row(ui_contpage3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(ui_contpage3, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
-
-    ui_rowrav = ui_rowswitch_create(ui_contpage3);
-    lv_obj_set_x(ui_rowrav, 0);
-    lv_obj_set_y(ui_rowrav, 0);
-
-    lv_image_set_src(ui_comp_get_child(ui_rowrav, UI_COMP_ROWSWITCH_IMGICON), &ui_img_img_ravrecording_png);
-
-    lv_image_set_src(ui_comp_get_child(ui_rowrav, UI_COMP_ROWSWITCH_SPACER), &ui_img_img_dots_png);
 
     ui_rowstandby = ui_rowlabel_create(ui_contpage3);
     lv_obj_set_x(ui_rowstandby, 0);
@@ -767,18 +757,17 @@ void ui_MainPage_screen_destroy(void)
     ui_rowbrightness = NULL;
     ui_rowcontrast = NULL;
     ui_rowsharpness = NULL;
-    ui_rowbgreflesh = NULL;
     ui_rowultraclear = NULL;
-    ui_contpage2 = NULL;
     ui_rowpip = NULL;
+    ui_contpage2 = NULL;
     ui_rowwifi = NULL;
     ui_rowtilt = NULL;
     ui_rowcompass = NULL;
     ui_rowreticle = NULL;
     ui_rowballistic = NULL;
     ui_rowmic = NULL;
-    ui_contpage3 = NULL;
     ui_rowrav = NULL;
+    ui_contpage3 = NULL;
     ui_rowstandby = NULL;
     ui_rowcompasscalibration = NULL;
     ui_rowdeadpixel = NULL;

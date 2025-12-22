@@ -12,8 +12,8 @@ lv_obj_t * ui_paneleg_create(lv_obj_t * comp_parent)
 
     lv_obj_t * cui_paneleg;
     cui_paneleg = lv_obj_create(comp_parent);
-    lv_obj_set_height(cui_paneleg, 50);
     lv_obj_set_width(cui_paneleg, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(cui_paneleg, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(cui_paneleg, LV_ALIGN_BOTTOM_LEFT);
     lv_obj_remove_flag(cui_paneleg, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
     lv_obj_set_style_radius(cui_paneleg, 0, LV_PART_MAIN | LV_STATE_DEFAULT);

@@ -1,9 +1,16 @@
-SET(SOURCES components/ui_comp_paneleg.c
+SET(SOURCES components/ui_comp_cmpdatetimebar.c
+    components/ui_comp_cmpfocuscell.c
+    components/ui_comp_cmpmodetoggle.c
+    components/ui_comp_cmptableheader.c
+    components/ui_comp_cmptablerow4col.c
+    components/ui_comp_div_.c
+    components/ui_comp_paneleg.c
     components/ui_comp_rowenter.c
     components/ui_comp_rowlabel.c
     components/ui_comp_rowswitch.c
     components/ui_comp.c
     screens/ui_MainPage.c
+    screens/ui_ScrFileMgr.c
     ui_theme_manager.c
     ui_themes.c
     ui.c
@@ -25,7 +32,6 @@ SET(SOURCES components/ui_comp_paneleg.c
     images/ui_img_img_brightness_png.c
     images/ui_img_img_contrast_png.c
     images/ui_img_img_sharpness_png.c
-    images/ui_img_img_backgroundreflesh_png.c
     images/ui_img_img_ultraclear_png.c
     images/ui_img_img_pip_png.c
     images/ui_img_1583056019.c
@@ -42,11 +48,18 @@ SET(SOURCES components/ui_comp_paneleg.c
     images/ui_img_img_statusbar_png.c
     images/ui_img_img_deletefile_png.c
     images/ui_img_img_setting_png.c
-    fonts/ui_font_WebnarSemiBold24.c
-    fonts/ui_font_WebnarSemiBold18.c
-    fonts/ui_font_WebnarRegular24.c
+    images/ui_img_img_img_arrow_up_png.c
+    images/ui_img_img_img_arrow_down_png.c
     fonts/ui_font_WebnarItalic32.c
+    fonts/ui_font_WebnarMedium15.c
+    fonts/ui_font_WebnarRegular13.c
+    fonts/ui_font_WebnarRegular15.c
+    fonts/ui_font_WebnarRegular20.c
+    fonts/ui_font_WebnarRegular24.c
     fonts/ui_font_WebnarSemiBold12.c
-    fonts/ui_font_WebnarMedium15.c)
+    fonts/ui_font_WebnarSemiBold18.c
+    fonts/ui_font_WebnarSemiBold24.c
+    fonts/ui_font_WebnarMedium18.c
+    fonts/ui_font_WebnarRegular18.c)
 
 add_library(ui ${SOURCES})

@@ -23,6 +23,7 @@ extern "C" {
 ///////////////////// SCREENS ////////////////////
 
 #include "screens/ui_MainPage.h"
+#include "screens/ui_ScrFileMgr.h"
 
 ///////////////////// VARIABLES ////////////////////
 
@@ -48,7 +49,6 @@ LV_IMG_DECLARE(ui_img_img_imagemode_png);    // assets/img/ImageMode.png
 LV_IMG_DECLARE(ui_img_img_brightness_png);    // assets/img/Brightness.png
 LV_IMG_DECLARE(ui_img_img_contrast_png);    // assets/img/Contrast.png
 LV_IMG_DECLARE(ui_img_img_sharpness_png);    // assets/img/Sharpness.png
-LV_IMG_DECLARE(ui_img_img_backgroundreflesh_png);    // assets/img/BackGroundReflesh.png
 LV_IMG_DECLARE(ui_img_img_ultraclear_png);    // assets/img/UltraClear.png
 LV_IMG_DECLARE(ui_img_img_pip_png);    // assets/img/PIP.png
 LV_IMG_DECLARE(ui_img_1583056019);    // assets/img/Wi-Fi.png
@@ -65,14 +65,21 @@ LV_IMG_DECLARE(ui_img_img_deadpixelrepair_png);    // assets/img/DeadPixelRepair
 LV_IMG_DECLARE(ui_img_img_statusbar_png);    // assets/img/StatusBar.png
 LV_IMG_DECLARE(ui_img_img_deletefile_png);    // assets/img/DeleteFile.png
 LV_IMG_DECLARE(ui_img_img_setting_png);    // assets/img/Setting.png
+LV_IMG_DECLARE(ui_img_img_img_arrow_up_png);    // assets/img/img_arrow_up.png
+LV_IMG_DECLARE(ui_img_img_img_arrow_down_png);    // assets/img/img_arrow_down.png
 
 // FONTS
-LV_FONT_DECLARE(ui_font_WebnarSemiBold24);
-LV_FONT_DECLARE(ui_font_WebnarSemiBold18);
-LV_FONT_DECLARE(ui_font_WebnarRegular24);
 LV_FONT_DECLARE(ui_font_WebnarItalic32);
-LV_FONT_DECLARE(ui_font_WebnarSemiBold12);
 LV_FONT_DECLARE(ui_font_WebnarMedium15);
+LV_FONT_DECLARE(ui_font_WebnarRegular13);
+LV_FONT_DECLARE(ui_font_WebnarRegular15);
+LV_FONT_DECLARE(ui_font_WebnarRegular20);
+LV_FONT_DECLARE(ui_font_WebnarRegular24);
+LV_FONT_DECLARE(ui_font_WebnarSemiBold12);
+LV_FONT_DECLARE(ui_font_WebnarSemiBold18);
+LV_FONT_DECLARE(ui_font_WebnarSemiBold24);
+LV_FONT_DECLARE(ui_font_WebnarMedium18);
+LV_FONT_DECLARE(ui_font_WebnarRegular18);
 
 // UI INIT
 void ui_init(void);

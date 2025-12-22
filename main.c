@@ -57,7 +57,7 @@ static void hal_init(void);
  *   GLOBAL FUNCTIONS
  **********************/
 
-int main(int argc, char** argv)
+int main(int argc, char ** argv)
 {
     (void)argc; /*Unused*/
     (void)argv; /*Unused*/
@@ -73,8 +73,7 @@ int main(int argc, char** argv)
     ui_attitude_scale_init();
     //ui_attitude_start_test_timer();
 
-    while (1)
-    {
+    while(1) {
         /* Periodically call the lv_task handler.
         * It could be done in a timer interrupt or an OS task too.*/
         lv_timer_handler();
@@ -96,18 +95,21 @@ int main(int argc, char** argv)
 static void hal_init(void)
 {
     /*Create a display*/
-    static lv_display_t* disp;
+    static lv_display_t * disp;
     disp = lv_sdl_window_create(1024, 768);
 
     /*Add the mouse as input device*/
-    static lv_indev_t* mouse;
+    static lv_indev_t * mouse;
     mouse = lv_sdl_mouse_create();
 
     /*Add the keyboard as an input device*/
-    static lv_indev_t* keyboard;
+    static lv_indev_t * keyboard;
     keyboard = lv_sdl_keyboard_create();
 
-    lv_theme_t* th = lv_theme_default_init(disp, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED),
-                                           LV_THEME_DEFAULT_DARK, LV_FONT_DEFAULT);
+    lv_theme_t * th = lv_theme_default_init(disp,
+                                            lv_palette_main(LV_PALETTE_BLUE),
+                                            lv_palette_main(LV_PALETTE_RED),
+                                            LV_THEME_DEFAULT_DARK,
+                                            LV_FONT_DEFAULT);
     lv_disp_set_theme(disp, th);
 }

@@ -17,6 +17,12 @@ void del_component_child_event_cb(lv_event_t * e);
 
 lv_obj_t * ui_comp_get_child(lv_obj_t * comp, uint32_t child_idx);
 extern uint32_t LV_EVENT_GET_COMP_CHILD;
+#include "ui_comp_cmpdatetimebar.h"
+#include "ui_comp_cmpfocuscell.h"
+#include "ui_comp_cmpmodetoggle.h"
+#include "ui_comp_cmptableheader.h"
+#include "ui_comp_cmptablerow4col.h"
+#include "ui_comp_div_.h"
 #include "ui_comp_paneleg.h"
 #include "ui_comp_rowenter.h"
 #include "ui_comp_rowlabel.h"
