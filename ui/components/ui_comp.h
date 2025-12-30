@@ -23,8 +23,11 @@ extern uint32_t LV_EVENT_GET_COMP_CHILD;
 #include "ui_comp_cmptableheader.h"
 #include "ui_comp_cmptablerow4col.h"
 #include "ui_comp_div_.h"
+#include "ui_comp_num.h"
 #include "ui_comp_paneleg.h"
 #include "ui_comp_rowenter.h"
+#include "ui_comp_rowitem.h"
+#include "ui_comp_rowitem1.h"
 #include "ui_comp_rowlabel.h"
 #include "ui_comp_rowswitch.h"
 

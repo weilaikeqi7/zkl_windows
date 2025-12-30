@@ -16,8 +16,11 @@ void ui_comp_cmpmodetoggle_create_hook(lv_obj_t * comp);
 void ui_comp_cmptableheader_create_hook(lv_obj_t * comp);
 void ui_comp_cmptablerow4col_create_hook(lv_obj_t * comp);
 void ui_comp_div__create_hook(lv_obj_t * comp);
+void ui_comp_num_create_hook(lv_obj_t * comp);
 void ui_comp_paneleg_create_hook(lv_obj_t * comp);
 void ui_comp_rowenter_create_hook(lv_obj_t * comp);
+void ui_comp_rowitem_create_hook(lv_obj_t * comp);
+void ui_comp_rowitem1_create_hook(lv_obj_t * comp);
 void ui_comp_rowlabel_create_hook(lv_obj_t * comp);
 void ui_comp_rowswitch_create_hook(lv_obj_t * comp);
 

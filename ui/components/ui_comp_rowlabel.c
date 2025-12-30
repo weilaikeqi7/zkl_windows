@@ -30,10 +30,10 @@ lv_obj_t * ui_rowlabel_create(lv_obj_t * comp_parent)
     lv_obj_set_style_pad_bottom(cui_rowlabel, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_row(cui_rowlabel, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_pad_column(cui_rowlabel, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
-    ui_object_set_themeable_style_property(cui_rowlabel, LV_PART_MAIN | LV_STATE_FOCUSED, LV_STYLE_BG_COLOR,
-                                           _ui_theme_color_menurowbg);
-    ui_object_set_themeable_style_property(cui_rowlabel, LV_PART_MAIN | LV_STATE_FOCUSED, LV_STYLE_BG_OPA,
-                                           _ui_theme_alpha_menurowbg);
+    lv_obj_set_style_bg_color(cui_rowlabel, lv_color_hex(0xC9C9C9), LV_PART_MAIN | LV_STATE_FOCUSED);
+    lv_obj_set_style_bg_opa(cui_rowlabel, 76, LV_PART_MAIN | LV_STATE_FOCUSED);
+    lv_obj_set_style_bg_color(cui_rowlabel, lv_color_hex(0x2EEEFC), LV_PART_MAIN | LV_STATE_USER_1);
+    lv_obj_set_style_bg_opa(cui_rowlabel, 76, LV_PART_MAIN | LV_STATE_USER_1);
 
     lv_obj_t * cui_imgicon1;
     cui_imgicon1 = lv_image_create(cui_rowlabel);

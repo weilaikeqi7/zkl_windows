@@ -48,3 +48,15 @@ void ui_comp_cmptablerow4col_create_hook(lv_obj_t * comp)
 void ui_comp_div__create_hook(lv_obj_t * comp)
 {
 }
+
+void ui_comp_rowitem_create_hook(lv_obj_t * comp)
+{
+}
+
+void ui_comp_rowitem1_create_hook(lv_obj_t * comp)
+{
+}
+
+void ui_comp_num_create_hook(lv_obj_t * comp)
+{
+}

@@ -24,6 +24,7 @@ extern "C" {
 
 #include "screens/ui_MainPage.h"
 #include "screens/ui_ScrFileMgr.h"
+#include "screens/ui_PlayBar.h"
 
 ///////////////////// VARIABLES ////////////////////
 
@@ -44,8 +45,9 @@ LV_IMG_DECLARE(ui_img_img_arrowrollimage_png);    // assets/img/arrowrollimage.p
 LV_IMG_DECLARE(ui_img_img_arrowpitchimage_png);    // assets/img/arrowpitchimage.png
 LV_IMG_DECLARE(ui_img_img_record_png);    // assets/img/record.png
 LV_IMG_DECLARE(ui_img_img_lrf_png);    // assets/img/LRF.png
-LV_IMG_DECLARE(ui_img_img_dots_png);    // assets/img/Dots.png
+LV_IMG_DECLARE(ui_img_img_enter2_png);    // assets/img/Enter2.png
 LV_IMG_DECLARE(ui_img_img_imagemode_png);    // assets/img/ImageMode.png
+LV_IMG_DECLARE(ui_img_img_dots_png);    // assets/img/Dots.png
 LV_IMG_DECLARE(ui_img_img_brightness_png);    // assets/img/Brightness.png
 LV_IMG_DECLARE(ui_img_img_contrast_png);    // assets/img/Contrast.png
 LV_IMG_DECLARE(ui_img_img_sharpness_png);    // assets/img/Sharpness.png
@@ -55,7 +57,6 @@ LV_IMG_DECLARE(ui_img_1583056019);    // assets/img/Wi-Fi.png
 LV_IMG_DECLARE(ui_img_img_tilt_png);    // assets/img/Tilt.png
 LV_IMG_DECLARE(ui_img_img_compass_png);    // assets/img/Compass.png
 LV_IMG_DECLARE(ui_img_img_reticle_png);    // assets/img/Reticle.png
-LV_IMG_DECLARE(ui_img_img_enter2_png);    // assets/img/Enter2.png
 LV_IMG_DECLARE(ui_img_img_ballistic_png);    // assets/img/Ballistic.png
 LV_IMG_DECLARE(ui_img_img_microphone_png);    // assets/img/Microphone.png
 LV_IMG_DECLARE(ui_img_img_ravrecording_png);    // assets/img/RAVRecording.png
@@ -65,21 +66,34 @@ LV_IMG_DECLARE(ui_img_img_deadpixelrepair_png);    // assets/img/DeadPixelRepair
 LV_IMG_DECLARE(ui_img_img_statusbar_png);    // assets/img/StatusBar.png
 LV_IMG_DECLARE(ui_img_img_deletefile_png);    // assets/img/DeleteFile.png
 LV_IMG_DECLARE(ui_img_img_setting_png);    // assets/img/Setting.png
+LV_IMG_DECLARE(ui_img_98533973);    // assets/img/menu1-1.png
+LV_IMG_DECLARE(ui_img_1180263152);    // assets/img/menu1-2.png
+LV_IMG_DECLARE(ui_img_2032974965);    // assets/img/menu1-3.png
+LV_IMG_DECLARE(ui_img_1501960782);    // assets/img/menu1-4.png
+LV_IMG_DECLARE(ui_img_1711277335);    // assets/img/menu1-5.png
+LV_IMG_DECLARE(ui_img_img_left_png);    // assets/img/left.png
+LV_IMG_DECLARE(ui_img_img_right_png);    // assets/img/right.png
+LV_IMG_DECLARE(ui_img_img_imageup_png);    // assets/img/imageup.png
+LV_IMG_DECLARE(ui_img_img_imagedown_png);    // assets/img/imagedown.png
 LV_IMG_DECLARE(ui_img_img_img_arrow_up_png);    // assets/img/img_arrow_up.png
 LV_IMG_DECLARE(ui_img_img_img_arrow_down_png);    // assets/img/img_arrow_down.png
+LV_IMG_DECLARE(ui_img_img_img_prev_png);    // assets/img/img_prev.png
+LV_IMG_DECLARE(ui_img_img_img_stop_png);    // assets/img/img_stop.png
+LV_IMG_DECLARE(ui_img_img_img_next_png);    // assets/img/img_next.png
 
 // FONTS
+LV_FONT_DECLARE(ui_font_WebnarItalic24);
 LV_FONT_DECLARE(ui_font_WebnarItalic32);
 LV_FONT_DECLARE(ui_font_WebnarMedium15);
+LV_FONT_DECLARE(ui_font_WebnarMedium18);
 LV_FONT_DECLARE(ui_font_WebnarRegular13);
 LV_FONT_DECLARE(ui_font_WebnarRegular15);
+LV_FONT_DECLARE(ui_font_WebnarRegular18);
 LV_FONT_DECLARE(ui_font_WebnarRegular20);
 LV_FONT_DECLARE(ui_font_WebnarRegular24);
 LV_FONT_DECLARE(ui_font_WebnarSemiBold12);
 LV_FONT_DECLARE(ui_font_WebnarSemiBold18);
 LV_FONT_DECLARE(ui_font_WebnarSemiBold24);
-LV_FONT_DECLARE(ui_font_WebnarMedium18);
-LV_FONT_DECLARE(ui_font_WebnarRegular18);
 
 // UI INIT
 void ui_init(void);
