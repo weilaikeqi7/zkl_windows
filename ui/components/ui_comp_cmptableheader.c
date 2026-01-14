@@ -40,7 +40,7 @@ lv_obj_t * ui_cmptableheader_create(lv_obj_t * comp_parent)
     lv_obj_set_style_border_width(cui_labhdrname, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_label_set_text(ui_comp_get_child(cui_labhdrname, UI_COMP_CMPFOCUSCELL_LABEL), "File Name");
-    lv_obj_set_style_text_font(ui_comp_get_child(cui_labhdrname, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarMedium18,
+    lv_obj_set_style_text_font(ui_comp_get_child(cui_labhdrname, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarMedium18,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_labhdrsize;
@@ -57,7 +57,7 @@ lv_obj_t * ui_cmptableheader_create(lv_obj_t * comp_parent)
     lv_obj_set_style_border_width(cui_labhdrsize, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_label_set_text(ui_comp_get_child(cui_labhdrsize, UI_COMP_CMPFOCUSCELL_LABEL), "File Size");
-    lv_obj_set_style_text_font(ui_comp_get_child(cui_labhdrsize, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarMedium18,
+    lv_obj_set_style_text_font(ui_comp_get_child(cui_labhdrsize, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarMedium18,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_labhdrtype;
@@ -74,7 +74,7 @@ lv_obj_t * ui_cmptableheader_create(lv_obj_t * comp_parent)
     lv_obj_set_style_border_width(cui_labhdrtype, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_label_set_text(ui_comp_get_child(cui_labhdrtype, UI_COMP_CMPFOCUSCELL_LABEL), "Type");
-    lv_obj_set_style_text_font(ui_comp_get_child(cui_labhdrtype, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarMedium18,
+    lv_obj_set_style_text_font(ui_comp_get_child(cui_labhdrtype, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarMedium18,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_labhdrdate;
@@ -91,7 +91,7 @@ lv_obj_t * ui_cmptableheader_create(lv_obj_t * comp_parent)
     lv_obj_set_style_border_width(cui_labhdrdate, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_label_set_text(ui_comp_get_child(cui_labhdrdate, UI_COMP_CMPFOCUSCELL_LABEL), "Date Created");
-    lv_obj_set_style_text_font(ui_comp_get_child(cui_labhdrdate, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarMedium18,
+    lv_obj_set_style_text_font(ui_comp_get_child(cui_labhdrdate, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarMedium18,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t ** children = lv_malloc(sizeof(lv_obj_t *) * _UI_COMP_CMPTABLEHEADER_NUM);

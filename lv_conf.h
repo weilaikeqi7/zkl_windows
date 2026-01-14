@@ -862,9 +862,9 @@
 #define LV_FS_DEFAULT_DRIVER_LETTER '\0'
 
 /** API for fopen, fread, etc. */
-#define LV_USE_FS_STDIO 0
+#define LV_USE_FS_STDIO 1
 #if LV_USE_FS_STDIO
-    #define LV_FS_STDIO_LETTER '\0'     /**< Set an upper-case driver-identifier letter for this driver (e.g. 'A'). */
+    #define LV_FS_STDIO_LETTER 'A'     /**< Set an upper-case driver-identifier letter for this driver (e.g. 'A'). */
     #define LV_FS_STDIO_PATH ""         /**< Set the working directory. File/directory paths will be appended to it. */
     #define LV_FS_STDIO_CACHE_SIZE 0    /**< >0 to cache this number of bytes in lv_fs_read() */
 #endif
@@ -932,7 +932,7 @@
 #endif
 
 /** LODEPNG decoder library */
-#define LV_USE_LODEPNG 0
+#define LV_USE_LODEPNG 1
 
 /** PNG decoder(libpng) library */
 #define LV_USE_LIBPNG 0
@@ -971,7 +971,7 @@
 #define LV_USE_BARCODE 0
 
 /** FreeType library */
-#define LV_USE_FREETYPE 0
+#define LV_USE_FREETYPE 1
 #if LV_USE_FREETYPE
     /** Let FreeType use LVGL memory and file porting */
     #define LV_FREETYPE_USE_LVGL_PORT 0

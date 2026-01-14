@@ -69,7 +69,7 @@ static void create_yaw_scale(void)
     static lv_style_t indicator_style;
     lv_style_init(&indicator_style);
 
-    lv_style_set_text_font(&indicator_style, &ui_font_WebnarSemiBold18);
+    lv_style_set_text_font(&indicator_style, ui_font_WebnarSemiBold18);
     lv_style_set_text_color(&indicator_style, lv_color_hex(0xFFFFFF));
 
     lv_style_set_line_color(&indicator_style, lv_color_hex(0xFFFFFF));
@@ -126,7 +126,7 @@ static void create_roll_scale(void)
     static lv_style_t indicator_style;
     lv_style_init(&indicator_style);
 
-    lv_style_set_text_font(&indicator_style, &ui_font_WebnarSemiBold18);
+    lv_style_set_text_font(&indicator_style, ui_font_WebnarSemiBold18);
     lv_style_set_text_color(&indicator_style, lv_color_hex(0xFFFFFF));
 
     lv_style_set_line_color(&indicator_style, lv_color_hex(0x2EEEFC));
@@ -180,7 +180,7 @@ static void create_pitch_scale(void)
     static lv_style_t indicator_style;
     lv_style_init(&indicator_style);
 
-    lv_style_set_text_font(&indicator_style, &ui_font_WebnarSemiBold18);
+    lv_style_set_text_font(&indicator_style, ui_font_WebnarSemiBold18);
     lv_style_set_text_color(&indicator_style, lv_color_hex(0xFFFFFF));
 
     lv_style_set_line_color(&indicator_style, lv_color_hex(0x2EEEFC));

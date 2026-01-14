@@ -40,7 +40,7 @@ lv_obj_t * ui_cmptablerow4col_create(lv_obj_t * comp_parent)
     lv_obj_set_style_border_width(cui_labname, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_label_set_text(ui_comp_get_child(cui_labname, UI_COMP_CMPFOCUSCELL_LABEL), "xxxxx.jpg");
-    lv_obj_set_style_text_font(ui_comp_get_child(cui_labname, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarRegular18,
+    lv_obj_set_style_text_font(ui_comp_get_child(cui_labname, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarRegular18,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_labsize;
@@ -57,7 +57,7 @@ lv_obj_t * ui_cmptablerow4col_create(lv_obj_t * comp_parent)
     lv_obj_set_style_border_width(cui_labsize, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_label_set_text(ui_comp_get_child(cui_labsize, UI_COMP_CMPFOCUSCELL_LABEL), "1.6MG");
-    lv_obj_set_style_text_font(ui_comp_get_child(cui_labsize, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarRegular18,
+    lv_obj_set_style_text_font(ui_comp_get_child(cui_labsize, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarRegular18,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_labtype;
@@ -74,7 +74,7 @@ lv_obj_t * ui_cmptablerow4col_create(lv_obj_t * comp_parent)
     lv_obj_set_style_border_width(cui_labtype, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_label_set_text(ui_comp_get_child(cui_labtype, UI_COMP_CMPFOCUSCELL_LABEL), "Photo");
-    lv_obj_set_style_text_font(ui_comp_get_child(cui_labtype, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarRegular18,
+    lv_obj_set_style_text_font(ui_comp_get_child(cui_labtype, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarRegular18,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_labdate;
@@ -91,7 +91,7 @@ lv_obj_t * ui_cmptablerow4col_create(lv_obj_t * comp_parent)
     lv_obj_set_style_border_width(cui_labdate, 0, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_label_set_text(ui_comp_get_child(cui_labdate, UI_COMP_CMPFOCUSCELL_LABEL), "2025-08-26 10:00");
-    lv_obj_set_style_text_font(ui_comp_get_child(cui_labdate, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarRegular18,
+    lv_obj_set_style_text_font(ui_comp_get_child(cui_labdate, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarRegular18,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t ** children = lv_malloc(sizeof(lv_obj_t *) * _UI_COMP_CMPTABLEROW4COL_NUM);

@@ -8,105 +8,131 @@
 
 #ifdef __cplusplus
 extern "C" {
+
+
 #endif
 
 // SCREEN: ui_MainPage
 extern void ui_MainPage_screen_init(void);
+
 extern void ui_MainPage_screen_destroy(void);
-extern lv_obj_t * ui_MainPage;
-extern lv_obj_t * ui_contstatusbar;
-extern lv_obj_t * ui_contstatusitems;
-extern lv_obj_t * ui_contitemsd;
-extern lv_obj_t * ui_imgsd;
-extern lv_obj_t * ui_labelsd;
-extern lv_obj_t * ui_contitempolarity;
-extern lv_obj_t * ui_imgpolarity;
-extern lv_obj_t * ui_contitemgun;
-extern lv_obj_t * ui_imggun;
-extern lv_obj_t * ui_contitemzoom;
-extern lv_obj_t * ui_imgzoom;
-extern lv_obj_t * ui_labelzoom;
-extern lv_obj_t * ui_contitemwifi;
-extern lv_obj_t * ui_imgwifi;
-extern lv_obj_t * ui_contstatusbattery;
-extern lv_obj_t * ui_contitemdate;
-extern lv_obj_t * ui_labeldate;
-extern lv_obj_t * ui_contitemtime;
-extern lv_obj_t * ui_labeltime;
-extern lv_obj_t * ui_imgbattery;
-extern lv_obj_t * ui_contyaw;
-extern lv_obj_t * ui_arrowyawimage;
-extern lv_obj_t * ui_yawscale;
-extern lv_obj_t * ui_controll;
-extern lv_obj_t * ui_rollscale;
-extern lv_obj_t * ui_controlllabel;
-extern lv_obj_t * ui_rolllabel;
-extern lv_obj_t * ui_arrowrollimage;
-extern lv_obj_t * ui_contpitch;
-extern lv_obj_t * ui_pitchscale;
-extern lv_obj_t * ui_contpitchlabel;
-extern lv_obj_t * ui_pitchlabel;
-extern lv_obj_t * ui_arrowpitchimage;
-extern lv_obj_t * ui_contdistance;
-extern lv_obj_t * ui_distancelabel;
-extern lv_obj_t * ui_contrecord;
-extern lv_obj_t * ui_recordimage;
-extern lv_obj_t * ui_recordtime;
-extern lv_obj_t * ui_recordtimelabel;
-extern lv_obj_t * ui_contmenu;
-extern lv_obj_t * ui_lbltitle;
-extern lv_obj_t * ui_contpages;
-extern lv_obj_t * ui_contpage1;
-extern lv_obj_t * ui_rowlrf;
-extern lv_obj_t * ui_rowimagemode;
-extern lv_obj_t * ui_rowbrightness;
-extern lv_obj_t * ui_rowcontrast;
-extern lv_obj_t * ui_rowsharpness;
-extern lv_obj_t * ui_rowultraclear;
-extern lv_obj_t * ui_rowpip;
-extern lv_obj_t * ui_contpage2;
-extern lv_obj_t * ui_rowwifi;
-extern lv_obj_t * ui_rowtilt;
-extern lv_obj_t * ui_rowcompass;
-extern lv_obj_t * ui_rowreticle;
-extern lv_obj_t * ui_rowballistic;
-extern lv_obj_t * ui_rowmic;
-extern lv_obj_t * ui_rowrav;
-extern lv_obj_t * ui_contpage3;
-extern lv_obj_t * ui_rowstandby;
-extern lv_obj_t * ui_rowcompasscalibration;
-extern lv_obj_t * ui_rowdeadpixel;
-extern lv_obj_t * ui_rowstatusbar;
-extern lv_obj_t * ui_rowdeletefile;
-extern lv_obj_t * ui_rowsetting;
-extern lv_obj_t * ui_contmenu2;
-extern lv_obj_t * ui_lbltitle2;
-extern lv_obj_t * ui_contpages2;
-extern lv_obj_t * ui_contpage;
-extern lv_obj_t * ui_menu1row1;
-extern lv_obj_t * ui_menu1row2;
-extern lv_obj_t * ui_menu1row3;
-extern lv_obj_t * ui_menu1row4;
-extern lv_obj_t * ui_menu1row5;
-extern lv_obj_t * ui_contitem2;
-extern lv_obj_t * ui_rowitem21;
-extern lv_obj_t * ui_rowitem22;
-extern lv_obj_t * ui_rowitem23;
-extern lv_obj_t * ui_rowitem24;
-extern lv_obj_t * ui_rowitem25;
-extern lv_obj_t * ui_rowitem26;
-extern lv_obj_t * ui_rowitem27;
-extern lv_obj_t * ui_rowitem28;
-extern lv_obj_t * ui_rowitem1;
-extern lv_obj_t * ui_numInput;
-extern lv_obj_t * ui_dialog;
-extern lv_obj_t * ui_num1;
-extern lv_obj_t * ui_num2;
-extern lv_obj_t * ui_num3;
-extern lv_obj_t * ui_num4;
-extern lv_obj_t * ui_options;
-extern lv_obj_t * ui_rowitemOK;
-extern lv_obj_t * ui_rowitemCANCEL;
+
+extern lv_obj_t *ui_MainPage;
+extern lv_obj_t *ui_contstatusbar;
+extern lv_obj_t *ui_contstatusitems;
+extern lv_obj_t *ui_contitemsd;
+extern lv_obj_t *ui_imgsd;
+extern lv_obj_t *ui_labelsd;
+extern lv_obj_t *ui_contitempolarity;
+extern lv_obj_t *ui_imgpolarity;
+extern lv_obj_t *ui_contitemgun;
+extern lv_obj_t *ui_imggun;
+extern lv_obj_t *ui_contitemzoom;
+extern lv_obj_t *ui_imgzoom;
+extern lv_obj_t *ui_panelzoom;
+extern lv_obj_t *ui_labelzoom;
+extern lv_obj_t *ui_contitemwifi;
+extern lv_obj_t *ui_imgwifi;
+extern lv_obj_t *ui_contstatusbattery;
+extern lv_obj_t *ui_contitemdate;
+extern lv_obj_t *ui_labeldate;
+extern lv_obj_t *ui_contitemtime;
+extern lv_obj_t *ui_labeltime;
+extern lv_obj_t *ui_imgbattery;
+extern lv_obj_t *ui_contyaw;
+extern lv_obj_t *ui_arrowyawimage;
+extern lv_obj_t *ui_yawscale;
+extern lv_obj_t *ui_controll;
+extern lv_obj_t *ui_rollscale;
+extern lv_obj_t *ui_controlllabel;
+extern lv_obj_t *ui_rolllabel;
+extern lv_obj_t *ui_arrowrollimage;
+extern lv_obj_t *ui_contpitch;
+extern lv_obj_t *ui_pitchscale;
+extern lv_obj_t *ui_contpitchlabel;
+extern lv_obj_t *ui_pitchlabel;
+extern lv_obj_t *ui_arrowpitchimage;
+extern lv_obj_t *ui_contdistance;
+extern lv_obj_t *ui_distancelabel;
+extern lv_obj_t *ui_contrecord;
+extern lv_obj_t *ui_recordimage;
+extern lv_obj_t *ui_recordtime;
+extern lv_obj_t *ui_recordtimelabel;
+extern lv_obj_t *ui_contmenu;
+extern lv_obj_t *ui_lbltitle;
+extern lv_obj_t *ui_contpages;
+extern lv_obj_t *ui_contpage1;
+extern lv_obj_t *ui_rowlrf;
+extern lv_obj_t *ui_rowimagemode;
+extern lv_obj_t *ui_rowbrightness;
+extern lv_obj_t *ui_rowcontrast;
+extern lv_obj_t *ui_rowsharpness;
+extern lv_obj_t *ui_rowultraclear;
+extern lv_obj_t *ui_rowpip;
+extern lv_obj_t *ui_contpage2;
+extern lv_obj_t *ui_rowwifi;
+extern lv_obj_t *ui_rowtilt;
+extern lv_obj_t *ui_rowcompass;
+extern lv_obj_t *ui_rowreticle;
+extern lv_obj_t *ui_rowballistic;
+extern lv_obj_t *ui_rowmic;
+extern lv_obj_t *ui_rowrav;
+extern lv_obj_t *ui_contpage3;
+extern lv_obj_t *ui_rowstandby;
+extern lv_obj_t *ui_rowcompasscalibration;
+extern lv_obj_t *ui_rowdeadpixel;
+extern lv_obj_t *ui_rowstatusbar;
+extern lv_obj_t *ui_rowdeletefile;
+extern lv_obj_t *ui_rowsetting;
+extern lv_obj_t *ui_contmenu2;
+extern lv_obj_t *ui_lbltitle2;
+extern lv_obj_t *ui_contpages2;
+extern lv_obj_t *ui_contpage;
+extern lv_obj_t *ui_menu1row1;
+extern lv_obj_t *ui_menu1row2;
+extern lv_obj_t *ui_menu1row3;
+extern lv_obj_t *ui_menu1row4;
+extern lv_obj_t *ui_menu1row5;
+extern lv_obj_t *ui_contitem2;
+extern lv_obj_t *ui_rowitem21;
+extern lv_obj_t *ui_rowitem22;
+extern lv_obj_t *ui_rowitem23;
+extern lv_obj_t *ui_rowitem24;
+extern lv_obj_t *ui_rowitem25;
+extern lv_obj_t *ui_rowitem26;
+extern lv_obj_t *ui_rowitem27;
+extern lv_obj_t *ui_rowitem28;
+extern lv_obj_t *ui_rowitem1;
+extern lv_obj_t *ui_numInput;
+extern lv_obj_t *ui_dialog;
+extern lv_obj_t *ui_num1;
+extern lv_obj_t *ui_num2;
+extern lv_obj_t *ui_num3;
+extern lv_obj_t *ui_num4;
+extern lv_obj_t *ui_options;
+extern lv_obj_t *ui_rowitemOK;
+extern lv_obj_t *ui_rowitemCANCEL;
+extern lv_obj_t *ui_keytest;
+
+extern void ui_event_Buttonprev(lv_event_t *e);
+
+extern lv_obj_t *ui_Buttonprev;
+extern lv_obj_t *ui_Labelprev;
+
+extern void ui_event_Buttonenter(lv_event_t *e);
+
+extern lv_obj_t *ui_Buttonenter;
+extern lv_obj_t *ui_Labelenter;
+
+extern void ui_event_Buttonnext(lv_event_t *e);
+
+extern lv_obj_t *ui_Buttonnext;
+extern lv_obj_t *ui_Labelnext;
+
+void ui_event_Buttonesc(lv_event_t *e);
+
+extern lv_obj_t *ui_Buttonesc;
+extern lv_obj_t *ui_Labelesc;
 // CUSTOM VARIABLES
 
 #ifdef __cplusplus
@@ -114,4 +140,3 @@ extern lv_obj_t * ui_rowitemCANCEL;
 #endif
 
 #endif
-

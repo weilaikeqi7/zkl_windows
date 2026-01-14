@@ -32,7 +32,7 @@ lv_obj_t * ui_rowitem1_create(lv_obj_t * comp_parent)
 
     lv_obj_t * cui_Imageleft;
     cui_Imageleft = lv_image_create(cui_rowitem1);
-    lv_image_set_src(cui_Imageleft, &ui_img_img_left_png);
+    lv_image_set_src(cui_Imageleft, IMAGES_PATH "left.png");
     lv_obj_set_width(cui_Imageleft, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(cui_Imageleft, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(cui_Imageleft, 16);
@@ -54,11 +54,11 @@ lv_obj_t * ui_rowitem1_create(lv_obj_t * comp_parent)
     ui_object_set_themeable_style_property(cui_Label, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
                                            _ui_theme_alpha_Text);
     lv_obj_set_style_text_align(cui_Label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(cui_Label, &ui_font_WebnarMedium15, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(cui_Label, ui_font_WebnarMedium15, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_Imageright;
     cui_Imageright = lv_image_create(cui_rowitem1);
-    lv_image_set_src(cui_Imageright, &ui_img_img_right_png);
+    lv_image_set_src(cui_Imageright, IMAGES_PATH "right.png");
     lv_obj_set_width(cui_Imageright, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(cui_Imageright, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(cui_Imageright, 66);

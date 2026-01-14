@@ -6,9 +6,10 @@
 /*********************
  *      INCLUDES
  *********************/
-#define _DEFAULT_SOURCE /* needed for usleep() */
-#include <stdlib.h>
+#define _DEFAULT_SOURCE /* needed for usleep() */#include <stdlib.h>
 #include <unistd.h>
+
+#include "demos/widgets/lv_demo_widgets.h"
 #include "lvgl/lvgl.h"
 #include "ui/ui.h"
 #include "ui/user/ui_attitude_scale.h"
@@ -73,6 +74,7 @@ int main(int argc, char ** argv)
     ui_attitude_scale_init();
     //ui_attitude_start_test_timer();
 
+
     while(1) {
         /* Periodically call the lv_task handler.
         * It could be done in a timer interrupt or an OS task too.*/
@@ -81,6 +83,7 @@ int main(int argc, char ** argv)
     }
 
     lv_deinit();
+    ui_font_deinit();
     return 0;
 }
 

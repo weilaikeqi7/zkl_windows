@@ -34,7 +34,7 @@ lv_obj_t * ui_cmpmodetoggle_create(lv_obj_t * comp_parent)
     lv_obj_set_y(cui_cellpreview, 0);
 
     lv_label_set_text(ui_comp_get_child(cui_cellpreview, UI_COMP_CMPFOCUSCELL_LABEL), "Preview Mode");
-    lv_obj_set_style_text_font(ui_comp_get_child(cui_cellpreview, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarRegular20,
+    lv_obj_set_style_text_font(ui_comp_get_child(cui_cellpreview, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarRegular20,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_celldelete;

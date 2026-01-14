@@ -81,7 +81,7 @@ void ui_ScrFileMgr_screen_init(void)
     lv_obj_set_y(ui_cellall, 0);
 
     lv_label_set_text(ui_comp_get_child(ui_cellall, UI_COMP_CMPFOCUSCELL_LABEL), "ALL");
-    lv_obj_set_style_text_font(ui_comp_get_child(ui_cellall, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarRegular20,
+    lv_obj_set_style_text_font(ui_comp_get_child(ui_cellall, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarRegular20,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_dtfilter = ui_cmpdatetimebar_create(ui_pfilter);
@@ -95,7 +95,7 @@ void ui_ScrFileMgr_screen_init(void)
     lv_obj_set_y(ui_cellsearch, 0);
 
     lv_label_set_text(ui_comp_get_child(ui_cellsearch, UI_COMP_CMPFOCUSCELL_LABEL), "Search");
-    lv_obj_set_style_text_font(ui_comp_get_child(ui_cellsearch, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarRegular20,
+    lv_obj_set_style_text_font(ui_comp_get_child(ui_cellsearch, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarRegular20,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_togglemode = ui_cmpmodetoggle_create(ui_ptopbar);
@@ -221,7 +221,7 @@ void ui_ScrFileMgr_screen_init(void)
     lv_obj_set_y(ui_cellprev, 14);
 
     lv_label_set_text(ui_comp_get_child(ui_cellprev, UI_COMP_CMPFOCUSCELL_LABEL), "Previous");
-    lv_obj_set_style_text_font(ui_comp_get_child(ui_cellprev, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarRegular18,
+    lv_obj_set_style_text_font(ui_comp_get_child(ui_cellprev, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarRegular18,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_ppage = ui_cmpfocuscell_create(ui_ppaging);
@@ -231,7 +231,7 @@ void ui_ScrFileMgr_screen_init(void)
     lv_obj_set_y(ui_ppage, 14);
 
     lv_label_set_text(ui_comp_get_child(ui_ppage, UI_COMP_CMPFOCUSCELL_LABEL), "1");
-    lv_obj_set_style_text_font(ui_comp_get_child(ui_ppage, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarRegular18,
+    lv_obj_set_style_text_font(ui_comp_get_child(ui_ppage, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarRegular18,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_cellnext = ui_cmpfocuscell_create(ui_ppaging);
@@ -241,11 +241,11 @@ void ui_ScrFileMgr_screen_init(void)
     lv_obj_set_y(ui_cellnext, 14);
 
     lv_label_set_text(ui_comp_get_child(ui_cellnext, UI_COMP_CMPFOCUSCELL_LABEL), "Next");
-    lv_obj_set_style_text_font(ui_comp_get_child(ui_cellnext, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarRegular18,
+    lv_obj_set_style_text_font(ui_comp_get_child(ui_cellnext, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarRegular18,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_imgarrowup = lv_image_create(ui_proot);
-    lv_image_set_src(ui_imgarrowup, &ui_img_img_img_arrow_up_png);
+    lv_image_set_src(ui_imgarrowup, IMAGES_PATH "img_arrow_up.png");
     lv_obj_set_width(ui_imgarrowup, 24);
     lv_obj_set_height(ui_imgarrowup, 24);
     lv_obj_set_align(ui_imgarrowup, LV_ALIGN_CENTER);
@@ -254,7 +254,7 @@ void ui_ScrFileMgr_screen_init(void)
 
     lv_obj_move_to_index(ui_imgarrowup, 4);
     ui_imgarrowdown = lv_image_create(ui_proot);
-    lv_image_set_src(ui_imgarrowdown, &ui_img_img_img_arrow_down_png);
+    lv_image_set_src(ui_imgarrowdown, IMAGES_PATH "img_arrow_down.png");
     lv_obj_set_width(ui_imgarrowdown, 24);
     lv_obj_set_height(ui_imgarrowdown, 24);
     lv_obj_set_align(ui_imgarrowdown, LV_ALIGN_CENTER);

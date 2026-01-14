@@ -34,7 +34,7 @@ lv_obj_t * ui_cmpdatetimebar_create(lv_obj_t * comp_parent)
     lv_obj_set_y(cui_cellyear, 0);
 
     lv_label_set_text(ui_comp_get_child(cui_cellyear, UI_COMP_CMPFOCUSCELL_LABEL), "2025");
-    lv_obj_set_style_text_font(ui_comp_get_child(cui_cellyear, UI_COMP_CMPFOCUSCELL_LABEL), &ui_font_WebnarRegular15,
+    lv_obj_set_style_text_font(ui_comp_get_child(cui_cellyear, UI_COMP_CMPFOCUSCELL_LABEL), ui_font_WebnarRegular15,
                                LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_labdash1;
@@ -49,7 +49,7 @@ lv_obj_t * ui_cmpdatetimebar_create(lv_obj_t * comp_parent)
                                            _ui_theme_color_Text);
     ui_object_set_themeable_style_property(cui_labdash1, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
                                            _ui_theme_alpha_Text);
-    lv_obj_set_style_text_font(cui_labdash1, &ui_font_WebnarRegular13, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(cui_labdash1, ui_font_WebnarRegular13, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_cellmonth;
     cui_cellmonth = ui_cmpfocuscell_create(cui_cmpdatetimebar);
@@ -72,7 +72,7 @@ lv_obj_t * ui_cmpdatetimebar_create(lv_obj_t * comp_parent)
                                            _ui_theme_color_Text);
     ui_object_set_themeable_style_property(cui_labdash2, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
                                            _ui_theme_alpha_Text);
-    lv_obj_set_style_text_font(cui_labdash2, &ui_font_WebnarRegular13, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(cui_labdash2, ui_font_WebnarRegular13, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_cellday;
     cui_cellday = ui_cmpfocuscell_create(cui_cmpdatetimebar);
@@ -104,7 +104,7 @@ lv_obj_t * ui_cmpdatetimebar_create(lv_obj_t * comp_parent)
                                            _ui_theme_color_Text);
     ui_object_set_themeable_style_property(cui_labcolon, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
                                            _ui_theme_alpha_Text);
-    lv_obj_set_style_text_font(cui_labcolon, &ui_font_WebnarRegular13, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(cui_labcolon, ui_font_WebnarRegular13, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t * cui_cmpfocuscell1;
     cui_cmpfocuscell1 = ui_cmpfocuscell_create(cui_cmpdatetimebar);

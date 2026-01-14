@@ -144,7 +144,7 @@ lv_obj_t * ui_rowswitch_create(lv_obj_t * comp_parent)
     lv_label_set_text(cui_switchlabel, "OFF");
     lv_obj_set_style_text_color(cui_switchlabel, lv_color_hex(0xF2F4FB), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(cui_switchlabel, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_font(cui_switchlabel, &ui_font_WebnarSemiBold12, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(cui_switchlabel, ui_font_WebnarSemiBold12, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t ** children = lv_malloc(sizeof(lv_obj_t *) * _UI_COMP_ROWSWITCH_NUM);
     children[UI_COMP_ROWSWITCH_ROWSWITCH] = cui_rowswitch;

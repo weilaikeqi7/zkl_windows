@@ -34,7 +34,7 @@ void ui_PlayBar_screen_init(void)
     lv_obj_set_style_bg_opa(ui_pplaybar, 204, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_iconprev = lv_image_create(ui_pplaybar);
-    lv_image_set_src(ui_iconprev, &ui_img_img_img_prev_png);
+    lv_image_set_src(ui_iconprev, IMAGES_PATH "img_prev.png");
     lv_obj_set_width(ui_iconprev, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_iconprev, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_iconprev, -50);
@@ -45,7 +45,7 @@ void ui_PlayBar_screen_init(void)
 
     lv_obj_move_to_index(ui_iconprev, 0);
     ui_iconstop = lv_image_create(ui_pplaybar);
-    lv_image_set_src(ui_iconstop, &ui_img_img_img_stop_png);
+    lv_image_set_src(ui_iconstop, IMAGES_PATH "img_stop.png");
     lv_obj_set_width(ui_iconstop, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_iconstop, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_iconstop, LV_ALIGN_CENTER);
@@ -54,7 +54,7 @@ void ui_PlayBar_screen_init(void)
 
     lv_obj_move_to_index(ui_iconstop, 1);
     ui_iconnext = lv_image_create(ui_pplaybar);
-    lv_image_set_src(ui_iconnext, &ui_img_img_img_next_png);
+    lv_image_set_src(ui_iconnext, IMAGES_PATH "img_next.png");
     lv_obj_set_width(ui_iconnext, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_iconnext, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_iconnext, 50);

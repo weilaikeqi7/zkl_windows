@@ -42,7 +42,7 @@ lv_obj_t * ui_rowitem_create(lv_obj_t * comp_parent)
                                            _ui_theme_color_Text);
     ui_object_set_themeable_style_property(cui_Label, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_OPA,
                                            _ui_theme_alpha_Text);
-    lv_obj_set_style_text_font(cui_Label, &ui_font_WebnarMedium15, LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_font(cui_Label, ui_font_WebnarMedium15, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     lv_obj_t ** children = lv_malloc(sizeof(lv_obj_t *) * _UI_COMP_ROWITEM_NUM);
     children[UI_COMP_ROWITEM_ROWITEM] = cui_rowitem;
