@@ -20,7 +20,6 @@ extern "C" {
 #define UI_COMP_NUM_IMAGEDOWN 4
 #define _UI_COMP_NUM_NUM 5
 lv_obj_t * ui_num_create(lv_obj_t * comp_parent);
-void ui_event_comp_num_num(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

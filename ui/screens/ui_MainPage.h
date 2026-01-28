@@ -10,6 +10,7 @@
 extern "C" {
 
 
+
 #endif
 
 // SCREEN: ui_MainPage
@@ -102,13 +103,23 @@ extern lv_obj_t *ui_rowitem25;
 extern lv_obj_t *ui_rowitem26;
 extern lv_obj_t *ui_rowitem27;
 extern lv_obj_t *ui_rowitem28;
+extern lv_obj_t *ui_page3item1;
+extern lv_obj_t *ui_rowswitch1;
 extern lv_obj_t *ui_rowitem1;
+extern lv_obj_t *ui_rowitem2;
+extern lv_obj_t *ui_page3item2;
+extern lv_obj_t *ui_rowitem3;
+extern lv_obj_t *ui_rowitem4;
+extern lv_obj_t *ui_rowitem5;
 extern lv_obj_t *ui_numInput;
 extern lv_obj_t *ui_dialog;
 extern lv_obj_t *ui_num1;
 extern lv_obj_t *ui_num2;
 extern lv_obj_t *ui_num3;
 extern lv_obj_t *ui_num4;
+extern lv_obj_t *ui_point;
+extern lv_obj_t *ui_num5;
+extern lv_obj_t *ui_num6;
 extern lv_obj_t *ui_options;
 extern lv_obj_t *ui_rowitemOK;
 extern lv_obj_t *ui_rowitemCANCEL;

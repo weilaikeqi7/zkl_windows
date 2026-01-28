@@ -43,8 +43,8 @@ lv_obj_t * ui_rowitem1_create(lv_obj_t * comp_parent)
 
     lv_obj_t * cui_Label;
     cui_Label = lv_label_create(cui_rowitem1);
-    lv_obj_set_width(cui_Label, 36);
-    lv_obj_set_height(cui_Label, 21);
+    lv_obj_set_width(cui_Label, 80);
+    lv_obj_set_height(cui_Label, 27);
     lv_obj_set_x(cui_Label, 30);
     lv_obj_set_y(cui_Label, 0);
     lv_obj_set_align(cui_Label, LV_ALIGN_LEFT_MID);
@@ -61,7 +61,7 @@ lv_obj_t * ui_rowitem1_create(lv_obj_t * comp_parent)
     lv_image_set_src(cui_Imageright, IMAGES_PATH "right.png");
     lv_obj_set_width(cui_Imageright, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(cui_Imageright, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(cui_Imageright, 66);
+    lv_obj_set_x(cui_Imageright, 110);
     lv_obj_set_y(cui_Imageright, 0);
     lv_obj_set_align(cui_Imageright, LV_ALIGN_LEFT_MID);
     lv_obj_add_flag(cui_Imageright, LV_OBJ_FLAG_CLICKABLE);     /// Flags

@@ -5,17 +5,6 @@
 
 #include "../ui.h"
 
-void ui_event_comp_num_num(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t ** comp_num = lv_event_get_user_data(e);
-
-    if(event_code == LV_EVENT_KEY &&  lv_event_get_key(e) == LV_KEY_ENTER) {
-        _ui_flag_modify(comp_num[UI_COMP_NUM_IMAGEUP], LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(comp_num[UI_COMP_NUM_IMAGEDOWN], LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-    }
-}
-
 // COMPONENT num
 
 lv_obj_t * ui_num_create(lv_obj_t * comp_parent)
@@ -69,11 +58,19 @@ lv_obj_t * ui_num_create(lv_obj_t * comp_parent)
     lv_obj_set_style_border_opa(cui_panelnum, 255, LV_PART_MAIN | LV_STATE_FOCUSED);
     lv_obj_set_style_border_width(cui_panelnum, 1, LV_PART_MAIN | LV_STATE_FOCUSED);
     lv_obj_set_style_border_side(cui_panelnum, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_FOCUSED);
+    lv_obj_set_style_radius(cui_panelnum, 4, LV_PART_MAIN | LV_STATE_USER_1);
+    lv_obj_set_style_bg_color(cui_panelnum, lv_color_hex(0x2EEEFC), LV_PART_MAIN | LV_STATE_USER_1);
+    lv_obj_set_style_bg_opa(cui_panelnum, 76, LV_PART_MAIN | LV_STATE_USER_1);
+    lv_obj_set_style_border_color(cui_panelnum, lv_color_hex(0x316671), LV_PART_MAIN | LV_STATE_FOCUSED);
+    lv_obj_set_style_border_opa(cui_panelnum, 255, LV_PART_MAIN | LV_STATE_USER_1);
+    lv_obj_set_style_border_width(cui_panelnum, 1, LV_PART_MAIN | LV_STATE_USER_1);
+    lv_obj_set_style_border_side(cui_panelnum, LV_BORDER_SIDE_FULL, LV_PART_MAIN | LV_STATE_USER_1);
 
     lv_obj_t * cui_Label;
     cui_Label = lv_label_create(cui_panelnum);
     lv_obj_set_width(cui_Label, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(cui_Label, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_y(cui_Label, -3);
     lv_obj_set_align(cui_Label, LV_ALIGN_CENTER);
     lv_label_set_text(cui_Label, "1");
     ui_object_set_themeable_style_property(cui_Label, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_TEXT_COLOR,
@@ -100,7 +97,6 @@ lv_obj_t * ui_num_create(lv_obj_t * comp_parent)
     children[UI_COMP_NUM_IMAGEDOWN] = cui_Imagedown;
     lv_obj_add_event_cb(cui_num, get_component_child_event_cb, LV_EVENT_GET_COMP_CHILD, children);
     lv_obj_add_event_cb(cui_num, del_component_child_event_cb, LV_EVENT_DELETE, children);
-    lv_obj_add_event_cb(cui_num, ui_event_comp_num_num, LV_EVENT_ALL, children);
     ui_comp_num_create_hook(cui_num);
     return cui_num;
 }
