@@ -37,6 +37,7 @@ void ui_init(void)
     ui_MainPage_screen_init();
     ui_ScrFileMgr_screen_init();
     ui_PlayBar_screen_init();
+    timer_init();
     add_event_of_menu();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_disp_load_scr(ui_MainPage);

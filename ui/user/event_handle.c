@@ -10,6 +10,13 @@ int Contrast = 4;
 int Sharpness = 4;
 int StandbyTime = 5;
 Magnetic magnetic = {'+', 0, 0, 0, 0, 0, 0.0f};
+Date date = {0, 0, 0};
+Time tim = {0, 0, 0};
+Item Language = {
+    .des = {"English", "Chinese", "Russian"}, // 语言描述数组
+    .count = 3,                              // 语言数量
+    .index = 0                               // 默认语言索引（英文）
+};
 
 void ui_event_rowlrf(lv_event_t *e) {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -44,6 +51,7 @@ void ui_event_rowlrf(lv_event_t *e) {
                 show_menu_page1_item1();
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1();
                 break;
             default: break;
@@ -84,6 +92,7 @@ void ui_event_rowimagemode(lv_event_t *e) {
                 show_menu_page1_item2();
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1();
                 break;
             default: break;
@@ -137,6 +146,7 @@ void ui_event_rowbrightness(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1();
                 break;
             default: break;
@@ -190,6 +200,7 @@ void ui_event_rowcontrast(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1();
                 break;
             default: break;
@@ -243,6 +254,7 @@ void ui_event_rowsharpness(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1();
                 break;
             default: break;
@@ -286,6 +298,7 @@ void ui_event_rowultraclear(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1();
                 break;
             default: break;
@@ -330,6 +343,7 @@ void ui_event_rowpip(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1();
                 break;
             default: break;
@@ -374,6 +388,7 @@ void ui_event_menu1row1(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item1();
                 break;
             default: break;
@@ -408,6 +423,7 @@ void ui_event_menu1row2(lv_event_t *e) {
             case LV_KEY_ENTER:
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item1();
                 break;
             default: break;
@@ -451,6 +467,7 @@ void ui_event_menu1row3(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item1();
                 break;
             default: break;
@@ -498,6 +515,7 @@ void ui_event_menu1row4(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item1();
                 break;
             default: break;
@@ -533,6 +551,7 @@ void ui_event_menu1row5(lv_event_t *e) {
                 hidden_menu_page1_item1();
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item1();
                 break;
             default: break;
@@ -569,6 +588,7 @@ void ui_event_rowitem21(lv_event_t *e) {
                                   "White Hot");
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item2();
                 break;
             default: break;
@@ -605,6 +625,7 @@ void ui_event_rowitem22(lv_event_t *e) {
                                   "Black Hot");
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item2();
                 break;
             default: break;
@@ -641,6 +662,7 @@ void ui_event_rowitem23(lv_event_t *e) {
                                   "Iron Red");
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item2();
                 break;
             default: break;
@@ -677,6 +699,7 @@ void ui_event_rowitem24(lv_event_t *e) {
                                   "Desert Yellow");
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item2();
                 break;
             default: break;
@@ -713,6 +736,7 @@ void ui_event_rowitem25(lv_event_t *e) {
                                   "Green Hot");
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item2();
                 break;
             default: break;
@@ -749,6 +773,7 @@ void ui_event_rowitem26(lv_event_t *e) {
                                   "Red Hot");
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item2();
                 break;
             default: break;
@@ -785,6 +810,7 @@ void ui_event_rowitem27(lv_event_t *e) {
                                   "Outline");
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item2();
                 break;
             default: break;
@@ -819,6 +845,7 @@ void ui_event_rowitem28(lv_event_t *e) {
                 hidden_menu_page1_item2();
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page1_item2();
                 break;
             default: break;
@@ -864,6 +891,7 @@ void ui_event_rowwifi(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page2();
                 break;
             default: break;
@@ -907,6 +935,7 @@ void ui_event_rowtilt(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page2();
                 break;
             default: break;
@@ -950,6 +979,7 @@ void ui_event_rowcompass(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page2();
                 break;
             default: break;
@@ -989,6 +1019,7 @@ void ui_event_rowreticle(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page2();
                 break;
             default: break;
@@ -1032,6 +1063,7 @@ void ui_event_rowballistic(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page2();
                 break;
             default: break;
@@ -1075,6 +1107,7 @@ void ui_event_rowmic(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page2();
                 break;
             default: break;
@@ -1119,6 +1152,7 @@ void ui_event_rowrav(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page2();
                 break;
             default: break;
@@ -1159,6 +1193,7 @@ void ui_event_rowstandby(lv_event_t *e) {
                 show_menu_page3_item1();
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3();
                 break;
             default: break;
@@ -1197,6 +1232,7 @@ void ui_event_rowcompasscalibration(lv_event_t *e) {
                 show_menu_page3_item2();
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3();
                 break;
             default: break;
@@ -1234,6 +1270,7 @@ void ui_event_rowdeadpixel(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3();
                 break;
             default: break;
@@ -1275,6 +1312,7 @@ void ui_event_rowstatusbar(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3();
                 break;
             default: break;
@@ -1309,6 +1347,7 @@ void ui_event_rowdeletefile(lv_event_t *e) {
                 show_play_page();
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3();
                 break;
             default: break;
@@ -1345,8 +1384,10 @@ void ui_event_rowsetting(lv_event_t *e) {
                 } else {
                     lv_obj_set_state(obj, LV_STATE_USER_1, true);
                 }
+                show_menu_page3_item6();
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3();
                 break;
             default: break;
@@ -1389,6 +1430,7 @@ void ui_event_rowswitch1(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item1();
                 break;
             default: break;
@@ -1413,13 +1455,20 @@ void ui_event_rowitem1(lv_event_t *e) {
                 if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
                     lv_group_focus_next(keypad_group);
                 } else {
-                    if (StandbyTime % 5 != 0) {
-                        StandbyTime = ((StandbyTime + 4) / 5) * 5;
-                    } else {
-                        StandbyTime += 5;
-                    }
-                    if (StandbyTime > 60) {
+                    int rem;
+                    /* 防护：非正数归 1 */
+                    if (StandbyTime <= 0) {
                         StandbyTime = 1;
+                    } else {
+                        rem = StandbyTime % 5;
+                        if (rem == 0) {
+                            StandbyTime += 5; /* 已是 5 的倍数 -> 加 5 */
+                        } else {
+                            StandbyTime += (5 - rem); /* 向上取整到下一个 5 的倍数 */
+                        }
+                        if (StandbyTime > 60) {
+                            StandbyTime = 1; /* 超过 60 回绕到 1 */
+                        }
                     }
                     lv_label_set_text_fmt(ui_comp_get_child(ui_rowitem1, UI_COMP_ROWITEM1_LABEL), "%d minutes",
                                           StandbyTime);
@@ -1429,14 +1478,29 @@ void ui_event_rowitem1(lv_event_t *e) {
                 if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
                     lv_group_focus_prev(keypad_group);
                 } else {
-                    if (StandbyTime % 5 != 0) {
+                    if (StandbyTime == 1) {
+                        /* 从 1 往下按变为 60 */
+                        StandbyTime = 60;
+                    } else if (StandbyTime % 5 != 0) {
+                        /* 非 5 的倍数向下对齐到最近的 5 的倍数（可能为 0，后面修正为 1） */
                         StandbyTime = (StandbyTime / 5) * 5;
+                        if (StandbyTime == 0) StandbyTime = 1;
                     } else {
-                        StandbyTime -= 5;
+                        /* 已是 5 的倍数 */
+                        if (StandbyTime == 5) {
+                            /* 5 -> 1 */
+                            StandbyTime = 1;
+                        } else {
+                            /* 其它 5 的倍数减 5 */
+                            StandbyTime -= 5;
+                        }
                     }
+
+                    /* 任何小于 1 的意外情况都循环到 60 */
                     if (StandbyTime < 1) {
                         StandbyTime = 60;
                     }
+
                     lv_label_set_text_fmt(ui_comp_get_child(ui_rowitem1, UI_COMP_ROWITEM1_LABEL), "%d minutes",
                                           StandbyTime);
                 }
@@ -1449,6 +1513,7 @@ void ui_event_rowitem1(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item1();
                 break;
             default: break;
@@ -1483,6 +1548,7 @@ void ui_event_rowitem2(lv_event_t *e) {
                 hidden_menu_page3_item1();
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item1();
                 break;
             default: break;
@@ -1521,6 +1587,7 @@ void ui_event_rowitem3(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item2();
                 break;
             default: break;
@@ -1560,6 +1627,7 @@ void ui_event_rowitem4(lv_event_t *e) {
                 show_menu_page3_item2_item2();
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item2();
                 break;
             default: break;
@@ -1594,6 +1662,7 @@ void ui_event_rowitem5(lv_event_t *e) {
                 hidden_menu_page3_item2();
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item2();
                 break;
             default: break;
@@ -1645,6 +1714,7 @@ void ui_event_num1(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(child_obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item2_item2();
                 break;
             default: break;
@@ -1702,6 +1772,7 @@ void ui_event_num2(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(child_obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item2_item2();
                 break;
             default: break;
@@ -1759,6 +1830,7 @@ void ui_event_num3(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(child_obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item2_item2();
                 break;
             default: break;
@@ -1816,6 +1888,7 @@ void ui_event_num4(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(child_obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item2_item2();
                 break;
             default: break;
@@ -1873,6 +1946,7 @@ void ui_event_num5(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(child_obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item2_item2();
                 break;
             default: break;
@@ -1930,6 +2004,7 @@ void ui_event_num6(lv_event_t *e) {
                 }
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(child_obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item2_item2();
                 break;
             default: break;
@@ -1962,8 +2037,16 @@ void ui_event_rowitemOK(lv_event_t *e) {
                 break;
             case LV_KEY_ENTER:
                 hidden_menu_page3_item2_item2();
+                int integer = magnetic.num1 * 100 + magnetic.num2 * 10 + magnetic.num3;
+                int frac = magnetic.num4 * 10 + magnetic.num5;
+                float v = integer + (frac / 100.0f);
+                if (magnetic.symbol == '-') {
+                    v = -v;
+                }
+                magnetic.magnetic = v;
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item2_item2();
                 break;
             default: break;
@@ -1998,7 +2081,683 @@ void ui_event_rowitemCANCEL(lv_event_t *e) {
                 hidden_menu_page3_item2_item2();
                 break;
             case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
                 hidden_menu_page3_item2_item2();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_settingrow1(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+        lv_label_set_text(ui_lbltitle3, "Date");
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                }
+                break;
+            case LV_KEY_ENTER:
+                if (lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                } else {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, true);
+                }
+                show_menu_page3_itme6_item1();
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_item6();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_settingrow2(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+        lv_label_set_text(ui_lbltitle3, "Time");
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                }
+                break;
+            case LV_KEY_ENTER:
+                if (lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                } else {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, true);
+                }
+                show_menu_page3_itme6_item2();
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_item6();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_settingrow3(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+        lv_label_set_text(ui_lbltitle3, "Langauge");
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                }
+                else {
+                    Language.index = (Language.index + 1) % Language.count;
+                    lv_label_set_text(ui_comp_get_child(obj, UI_COMP_ROWLABEL_CONTPILL1_ITEMLABEL1),
+                                      Language.des[Language.index]);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                }
+                else {
+                    Language.index = (Language.index - 1 + Language.count) % Language.count;
+                    lv_label_set_text(ui_comp_get_child(obj, UI_COMP_ROWLABEL_CONTPILL1_ITEMLABEL1),
+                                      Language.des[Language.index]);
+                }
+                break;
+            case LV_KEY_ENTER:
+                if (lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                } else {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, true);
+                }
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_item6();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_settingrow4(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+        lv_label_set_text(ui_lbltitle3, "Factory Reset");
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                }
+                break;
+            case LV_KEY_ENTER:
+                if (lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                } else {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, true);
+                }
+                show_menu_page3_itme6_item4();
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_item6();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_settingrow5(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+        lv_label_set_text(ui_lbltitle3, "System Info");
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                }
+                break;
+            case LV_KEY_ENTER:
+                if (lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                } else {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, true);
+                }
+                show_menu_page3_itme6_item5();
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_item6();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_settingrow6(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+        lv_label_set_text(ui_lbltitle3, "");
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                }
+                break;
+            case LV_KEY_ENTER:
+                hidden_menu_page3_item6();
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_item6();
+                break;
+            default: break;
+        }
+    }
+}
+
+/* 辅助函数：闰年 & 当月天数 */
+int is_leap_year(int y) {
+    return (y % 4 == 0 && y % 100 != 0) || (y % 400 == 0);
+}
+
+int days_in_month(int y, int m) {
+    static const int dim[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (m < 1 || m > 12) return 31;
+    if (m == 2 && is_leap_year(y)) return 29;
+    return dim[m];
+}
+
+void ui_event_rowitemyear(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                } else {
+                    date.year++;
+                    if (date.year > 2099) date.year = 2026;
+                    /* 修正 day */
+                    int dim = days_in_month(date.year, date.month);
+                    if (date.day > dim) date.day = dim;
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemyear, UI_COMP_ROWITEM1_LABEL), "%d", date.year);
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemday, UI_COMP_ROWITEM1_LABEL), "%d", date.day);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                } else {
+                    date.year--;
+                    if (date.year < 2026) date.year = 2099;
+                    int dim = days_in_month(date.year, date.month);
+                    if (date.day > dim) date.day = dim;
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemyear, UI_COMP_ROWITEM1_LABEL), "%d", date.year);
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemday, UI_COMP_ROWITEM1_LABEL), "%d", date.day);
+                }
+                break;
+            case LV_KEY_ENTER:
+                if (lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                } else {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, true);
+                }
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_itme6_item1();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_rowitemmonth(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                } else {
+                    date.month++;
+                    if (date.month > 12) date.month = 1;
+                    int dim = days_in_month(date.year, date.month);
+                    if (date.day > dim) date.day = dim;
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemmonth, UI_COMP_ROWITEM1_LABEL), "%d", date.month);
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemday, UI_COMP_ROWITEM1_LABEL), "%d", date.day);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                } else {
+                    date.month--;
+                    if (date.month < 1) date.month = 12;
+                    int dim = days_in_month(date.year, date.month);
+                    if (date.day > dim) date.day = dim;
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemmonth, UI_COMP_ROWITEM1_LABEL), "%d", date.month);
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemday, UI_COMP_ROWITEM1_LABEL), "%d", date.day);
+                }
+                break;
+            case LV_KEY_ENTER:
+                if (lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                } else {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, true);
+                }
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_itme6_item1();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_rowitemday(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                } else {
+                    int dim = days_in_month(date.year, date.month);
+                    date.day++;
+                    if (date.day > dim) date.day = 1;
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemday, UI_COMP_ROWITEM1_LABEL), "%d", date.day);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                } else {
+                    int dim = days_in_month(date.year, date.month);
+                    date.day--;
+                    if (date.day < 1) date.day = dim;
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemday, UI_COMP_ROWITEM1_LABEL), "%d", date.day);
+                }
+                break;
+            case LV_KEY_ENTER:
+                if (lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                } else {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, true);
+                }
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_itme6_item1();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_rowitemback(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                }
+                break;
+            case LV_KEY_ENTER:
+                hidden_menu_page3_itme6_item1();
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_itme6_item1();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_rowitemhour(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                } else {
+                    tim.hour++;
+                    if (tim.hour > 23) tim.hour = 0;
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemhour, UI_COMP_ROWITEM1_LABEL), "%02d", tim.hour);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                } else {
+                    tim.hour--;
+                    if (tim.hour < 0) tim.hour = 23;
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemhour, UI_COMP_ROWITEM1_LABEL), "%02d", tim.hour);
+                }
+                break;
+            case LV_KEY_ENTER:
+                if (lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                } else {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, true);
+                }
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_itme6_item2();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_rowitemmin(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                } else {
+                    tim.min++;
+                    if (tim.min > 59) tim.min = 0;
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemmin, UI_COMP_ROWITEM1_LABEL), "%02d", tim.min);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                } else {
+                    tim.min--;
+                    if (tim.min < 0) tim.min = 59;
+                    lv_label_set_text_fmt(ui_comp_get_child(ui_rowitemmin, UI_COMP_ROWITEM1_LABEL), "%02d", tim.min);
+                }
+                break;
+            case LV_KEY_ENTER:
+                if (lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                } else {
+                    lv_obj_set_state(obj, LV_STATE_USER_1, true);
+                }
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_itme6_item2();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_rowitemtimeback(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                }
+                break;
+            case LV_KEY_ENTER:
+                hidden_menu_page3_itme6_item2();
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_itme6_item2();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_resetOK(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                }
+                break;
+            case LV_KEY_ENTER:
+                hidden_menu_page3_itme6_item4();
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_itme6_item4();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_resetCANCEL(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                }
+                break;
+            case LV_KEY_ENTER:
+                hidden_menu_page3_itme6_item4();
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_itme6_item4();
+                break;
+            default: break;
+        }
+    }
+}
+
+void ui_event_infoOK(lv_event_t *e) {
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t *obj = lv_event_get_user_data(e);
+
+    if (event_code == LV_EVENT_FOCUSED) {
+    }
+    if (event_code == LV_EVENT_DEFOCUSED) {
+    }
+
+    if (event_code == LV_EVENT_KEY) {
+        uint32_t key = lv_indev_get_key(lv_indev_active());
+
+        switch (key) {
+            case LV_KEY_UP:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_next(keypad_group);
+                }
+                break;
+            case LV_KEY_DOWN:
+                if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    lv_group_focus_prev(keypad_group);
+                }
+                break;
+            case LV_KEY_ENTER:
+                hidden_menu_page3_itme6_item5();
+                break;
+            case LV_KEY_ESC:
+                lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                hidden_menu_page3_itme6_item5();
                 break;
             default: break;
         }
@@ -2054,4 +2813,20 @@ void add_event_of_menu(void) {
     lv_obj_add_event_cb(ui_comp_get_child(ui_num6, UI_COMP_NUM_PANELNUM), ui_event_num6, LV_EVENT_ALL, ui_num6);
     lv_obj_add_event_cb(ui_rowitemOK, ui_event_rowitemOK, LV_EVENT_ALL, ui_rowitemOK);
     lv_obj_add_event_cb(ui_rowitemCANCEL, ui_event_rowitemCANCEL, LV_EVENT_ALL, ui_rowitemCANCEL);
+    lv_obj_add_event_cb(ui_settingrow1, ui_event_settingrow1, LV_EVENT_ALL, ui_settingrow1);
+    lv_obj_add_event_cb(ui_settingrow2, ui_event_settingrow2, LV_EVENT_ALL, ui_settingrow2);
+    lv_obj_add_event_cb(ui_settingrow3, ui_event_settingrow3, LV_EVENT_ALL, ui_settingrow3);
+    lv_obj_add_event_cb(ui_settingrow4, ui_event_settingrow4, LV_EVENT_ALL, ui_settingrow4);
+    lv_obj_add_event_cb(ui_settingrow5, ui_event_settingrow5, LV_EVENT_ALL, ui_settingrow5);
+    lv_obj_add_event_cb(ui_settingrow6, ui_event_settingrow6, LV_EVENT_ALL, ui_settingrow6);
+    lv_obj_add_event_cb(ui_rowitemyear, ui_event_rowitemyear, LV_EVENT_ALL, ui_rowitemyear);
+    lv_obj_add_event_cb(ui_rowitemmonth, ui_event_rowitemmonth, LV_EVENT_ALL, ui_rowitemmonth);
+    lv_obj_add_event_cb(ui_rowitemday, ui_event_rowitemday, LV_EVENT_ALL, ui_rowitemday);
+    lv_obj_add_event_cb(ui_rowitemdateback, ui_event_rowitemback, LV_EVENT_ALL, ui_rowitemdateback);
+    lv_obj_add_event_cb(ui_rowitemhour, ui_event_rowitemhour, LV_EVENT_ALL, ui_rowitemhour);
+    lv_obj_add_event_cb(ui_rowitemmin, ui_event_rowitemmin, LV_EVENT_ALL, ui_rowitemmin);
+    lv_obj_add_event_cb(ui_rowitemtimeback, ui_event_rowitemtimeback, LV_EVENT_ALL, ui_rowitemtimeback);
+    lv_obj_add_event_cb(ui_resetOK, ui_event_resetOK, LV_EVENT_ALL, ui_resetOK);
+    lv_obj_add_event_cb(ui_resetCANCEL, ui_event_resetCANCEL, LV_EVENT_ALL, ui_resetCANCEL);
+    lv_obj_add_event_cb(ui_infoOK, ui_event_infoOK, LV_EVENT_ALL, ui_infoOK);
 }
