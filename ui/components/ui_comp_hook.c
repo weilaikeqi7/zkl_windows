@@ -5,26 +5,6 @@
 
 #include "../ui.h"
 
-void ui_comp_paneleg_create_hook(lv_obj_t * comp)
-{
-}
-
-void ui_comp_rowtemplate_create_hook(lv_obj_t * comp)
-{
-}
-
-void ui_comp_rowswitch_create_hook(lv_obj_t * comp)
-{
-}
-
-void ui_comp_rowlabel_create_hook(lv_obj_t * comp)
-{
-}
-
-void ui_comp_rowenter_create_hook(lv_obj_t * comp)
-{
-}
-
 void ui_comp_cmpdatetimebar_create_hook(lv_obj_t * comp)
 {
 }
@@ -49,6 +29,18 @@ void ui_comp_div__create_hook(lv_obj_t * comp)
 {
 }
 
+void ui_comp_num_create_hook(lv_obj_t * comp)
+{
+}
+
+void ui_comp_paneleg_create_hook(lv_obj_t * comp)
+{
+}
+
+void ui_comp_rowenter_create_hook(lv_obj_t * comp)
+{
+}
+
 void ui_comp_rowitem_create_hook(lv_obj_t * comp)
 {
 }
@@ -57,6 +49,22 @@ void ui_comp_rowitem1_create_hook(lv_obj_t * comp)
 {
 }
 
-void ui_comp_num_create_hook(lv_obj_t * comp)
+void ui_comp_rowlabel_create_hook(lv_obj_t * comp)
+{
+}
+
+void ui_comp_rowswitch_create_hook(lv_obj_t * comp)
+{
+}
+
+void ui_comp_dialogeg_create_hook(lv_obj_t * comp)
+{
+}
+
+void ui_comp_distance_create_hook(lv_obj_t * comp)
+{
+}
+
+void ui_comp_distancelabel_create_hook(lv_obj_t * comp)
 {
 }

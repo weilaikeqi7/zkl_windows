@@ -20,7 +20,7 @@ extern "C" {
 #include "ui_theme_manager.h"
 #include "ui_themes.h"
 #include "user/lv_port_indev.h"
-#include "user/event_handle.h"
+#include "user/mainpage_event_handle.h"
 #include "user/menu_handle.h"
 #include "user/font.h"
 #include "user/play_handle.h"

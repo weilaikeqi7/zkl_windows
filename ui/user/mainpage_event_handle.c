@@ -2,7 +2,8 @@
 // Created by jinxing on 2026/1/8.
 //
 
-#include "event_handle.h"
+#include "reticle_feature.h"
+#include "mainpage_event_handle.h"
 
 Item DistanceUnit = {.des = {"Y", "M"}, .count = 2, .index = 0};
 int Brightness = 4;
@@ -14,8 +15,8 @@ Date date = {0, 0, 0};
 Time tim = {0, 0, 0};
 Item Language = {
     .des = {"English", "Chinese", "Russian"}, // 语言描述数组
-    .count = 3,                              // 语言数量
-    .index = 0                               // 默认语言索引（英文）
+    .count = 3, // 语言数量
+    .index = 0 // 默认语言索引（英文）
 };
 
 void ui_event_rowlrf(lv_event_t *e) {
@@ -1017,11 +1018,18 @@ void ui_event_rowreticle(lv_event_t *e) {
                 } else {
                     lv_obj_set_state(obj, LV_STATE_USER_1, true);
                 }
+                reticle_feature_open();
                 break;
             case LV_KEY_ESC:
-                lv_obj_set_state(obj, LV_STATE_USER_1, false);
-                hidden_menu_page2();
-                break;
+                if (lv_obj_has_state(obj, LV_STATE_USER_1)) {
+                    // 菜单打开时：先关二级菜单，不退出page2
+                    reticle_feature_close();
+                    lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                } else {
+                    // 菜单未打开：执行原来的退出page2逻辑
+                    lv_obj_set_state(obj, LV_STATE_USER_1, false);
+                    hidden_menu_page2();
+                }
             default: break;
         }
     }
@@ -2182,8 +2190,7 @@ void ui_event_settingrow3(lv_event_t *e) {
             case LV_KEY_UP:
                 if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
                     lv_group_focus_next(keypad_group);
-                }
-                else {
+                } else {
                     Language.index = (Language.index + 1) % Language.count;
                     lv_label_set_text(ui_comp_get_child(obj, UI_COMP_ROWLABEL_CONTPILL1_ITEMLABEL1),
                                       Language.des[Language.index]);
@@ -2192,8 +2199,7 @@ void ui_event_settingrow3(lv_event_t *e) {
             case LV_KEY_DOWN:
                 if (!lv_obj_has_state(obj, LV_STATE_USER_1)) {
                     lv_group_focus_prev(keypad_group);
-                }
-                else {
+                } else {
                     Language.index = (Language.index - 1 + Language.count) % Language.count;
                     lv_label_set_text(ui_comp_get_child(obj, UI_COMP_ROWLABEL_CONTPILL1_ITEMLABEL1),
                                       Language.des[Language.index]);
@@ -2829,4 +2835,6 @@ void add_event_of_menu(void) {
     lv_obj_add_event_cb(ui_resetOK, ui_event_resetOK, LV_EVENT_ALL, ui_resetOK);
     lv_obj_add_event_cb(ui_resetCANCEL, ui_event_resetCANCEL, LV_EVENT_ALL, ui_resetCANCEL);
     lv_obj_add_event_cb(ui_infoOK, ui_event_infoOK, LV_EVENT_ALL, ui_infoOK);
+    reticle_feature_init();
+    reticle_feature_bind_events();
 }
