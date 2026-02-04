@@ -240,6 +240,21 @@ void distance_editor_open(int initial_value,
     hide_all_arrows();
 
     lv_obj_remove_flag(ui_editdistance, LV_OBJ_FLAG_HIDDEN);
+
+    /*
+     * 让“修改距离/添加距离”弹窗尽量靠右显示，避免遮挡左侧菜单列。
+     * 以父对象（通常是 ui_MainPage）为参照，右边留 20px 边距。
+     */
+    {
+        lv_obj_t *parent = lv_obj_get_parent(ui_editdistance);
+        if (parent) {
+            lv_coord_t pw = lv_obj_get_width(parent);
+            lv_coord_t w  = lv_obj_get_width(ui_editdistance);
+            lv_coord_t x  = pw - w - 20;
+            if (x < 0) x = 0;
+            lv_obj_set_pos(ui_editdistance, x, 40);
+        }
+    }
     s_opened = true;
 
     focus_to_popup();

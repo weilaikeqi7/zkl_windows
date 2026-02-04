@@ -35,6 +35,12 @@ void reticle_distance_mgr_apply_selected_style(void);
 void reticle_distance_mgr_apply_primary_icon(void);
 void reticle_distance_mgr_refresh_calibration_ui(uint8_t idx);
 
+/* 细粒度刷新：避免每次修改 X/Y/Zoom/Freeze 都刷新整套四级菜单 */
+void reticle_distance_mgr_refresh_calib_x_ui(uint8_t idx);
+void reticle_distance_mgr_refresh_calib_y_ui(uint8_t idx);
+void reticle_distance_mgr_refresh_calib_zoom_ui(uint8_t idx);
+void reticle_distance_mgr_refresh_calib_freeze_ui(uint8_t idx);
+
 /* --- 数据操作 --- */
 bool reticle_distance_mgr_insert_sorted(int dist, uint8_t *new_idx, lv_obj_t **new_obj);
 bool reticle_distance_mgr_delete(uint8_t idx);

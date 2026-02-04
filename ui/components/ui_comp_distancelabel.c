@@ -32,10 +32,24 @@ lv_obj_t * ui_distancelabel_create(lv_obj_t * comp_parent)
     lv_obj_set_style_pad_column(cui_distancelabel, 10, LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_color(cui_distancelabel, lv_color_hex(0xC9C9C9), LV_PART_MAIN | LV_STATE_FOCUSED);
     lv_obj_set_style_bg_opa(cui_distancelabel, 76, LV_PART_MAIN | LV_STATE_FOCUSED);
-    lv_obj_set_style_bg_color(cui_distancelabel, lv_color_hex(0x2EEEFC), LV_PART_MAIN | LV_STATE_USER_1);
-    lv_obj_set_style_bg_opa(cui_distancelabel, 76, LV_PART_MAIN | LV_STATE_USER_1);
 
-    lv_obj_t * cui_contpill;
+    /* 距离条目状态约定：
+ * - LV_STATE_USER_2：该枪型的“优先距离(Primacy)”条目（每枪型唯一）。
+ * - LV_STATE_USER_1：距离条目正在被编辑（临时态）。
+ *   编辑结束只清 USER_1；若该条同时是优先距离，则会自然回到 USER_2 样式。
+ * - dots 图标：所有距离条目都显示，不用于区分优先距离。
+ */
+lv_obj_set_style_bg_color(cui_distancelabel, lv_color_hex(0x2EEEFC), LV_PART_MAIN | LV_STATE_USER_1);
+lv_obj_set_style_bg_opa(cui_distancelabel, 76, LV_PART_MAIN | LV_STATE_USER_1);
+
+/* 编辑态（USER_1）：无论是否为优先距离，编辑时都显示同样的编辑高亮 */
+lv_obj_set_style_bg_color(cui_distancelabel, lv_color_hex(0xFFE08A), LV_PART_MAIN | LV_STATE_USER_2);
+lv_obj_set_style_bg_opa(cui_distancelabel, 110, LV_PART_MAIN | LV_STATE_USER_2);
+
+/* 同时满足 USER_1|USER_2 时：以“编辑态”为准（覆盖 USER_2） */
+lv_obj_set_style_bg_color(cui_distancelabel, lv_color_hex(0xFFE08A), LV_PART_MAIN | (LV_STATE_USER_1 | LV_STATE_USER_2));
+lv_obj_set_style_bg_opa(cui_distancelabel, 110, LV_PART_MAIN | (LV_STATE_USER_1 | LV_STATE_USER_2));
+lv_obj_t * cui_contpill;
     cui_contpill = lv_obj_create(cui_distancelabel);
     lv_obj_set_width(cui_contpill, 34);
     lv_obj_set_height(cui_contpill, 34);
