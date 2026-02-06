@@ -1,9 +1,6 @@
 // reticle_distance_mgr.c
 #include "reticle_distance_mgr.h"
 #include "ui.h"
-#include "lvgl.h"
-
-extern lv_obj_t *ui_distancelabel_create(lv_obj_t *comp_parent);
 
 static lv_obj_t *s_obj[RETICLE_MAX_DISTANCE_ITEMS];
 static reticle_distance_entry_t s_entry[RETICLE_MAX_DISTANCE_ITEMS];
@@ -99,6 +96,15 @@ reticle_distance_entry_t *reticle_distance_mgr_entry(uint8_t idx) {
 
 lv_obj_t *reticle_distance_mgr_obj(uint8_t idx) {
     return (idx < s_cnt) ? s_obj[idx] : NULL;
+}
+
+void reticle_distance_mgr_set_visible_range(uint8_t start, uint8_t count) {
+    /* 隐藏不在[start, start+count)区间内的距离条目，用于“每页2条距离”的分页显示 */
+    for (uint8_t i = 0; i < s_cnt; i++) {
+        bool in_range = (i >= start) && (i < (uint8_t)(start + count));
+        if (in_range) lv_obj_clear_flag(s_obj[i], LV_OBJ_FLAG_HIDDEN);
+        else lv_obj_add_flag(s_obj[i], LV_OBJ_FLAG_HIDDEN);
+    }
 }
 
 int reticle_distance_mgr_find_idx_by_obj(lv_obj_t *obj) {

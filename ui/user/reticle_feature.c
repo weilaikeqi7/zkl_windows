@@ -8,11 +8,9 @@
 #include "reticle_distance_mgr.h"
 #include "reticle_model.h"
 
-extern lv_group_t *keypad_group;
-
 /* forward declarations */
 static void ev_distance_item(lv_event_t *e);
-
+static void ev_level2_common_nav(lv_event_t *e);
 /* ===================== 观察区域/硬件层接口占位（你项目中自行对接） ===================== */
 static void hw_reticle_set_visible(bool en) { (void) en; }
 static void hw_reticle_set_rotate(bool en) { (void) en; }
@@ -22,6 +20,47 @@ static void hw_reticle_apply_distance(const reticle_distance_entry_t *e) { (void
 
 /* ===================== 状态/dirty ===================== */
 static bool s_opened = false;
+
+/* 二级菜单分页（见下方规则说明） */
+static uint8_t s_dist_page = 0;
+
+/* 分页规则（真实翻页）：
+ * - Page0：显示 8 个固定项 + 最多 2 条距离（保证第一页总计<=10）
+ * - Page1..：仅显示距离条目，每页最多 10 条（例如第二页剩 6 条，就显示 6 条）
+ */
+#define RETICLE_DIST_FIRST_PAGE 2
+#define RETICLE_DIST_OTHER_PAGE 10
+
+static uint8_t dist_pages(uint8_t dist_cnt) {
+    if (dist_cnt <= RETICLE_DIST_FIRST_PAGE) return 1;
+    uint8_t remain = (uint8_t)(dist_cnt - RETICLE_DIST_FIRST_PAGE);
+    uint8_t p = (uint8_t)((remain + RETICLE_DIST_OTHER_PAGE - 1) / RETICLE_DIST_OTHER_PAGE);
+    return (uint8_t)(1 + (p ? p : 1));
+}
+
+static void dist_page_range(uint8_t page, uint8_t dist_cnt, uint8_t *start, uint8_t *show_n) {
+    if (page == 0) {
+        *start = 0;
+        *show_n = (dist_cnt < RETICLE_DIST_FIRST_PAGE) ? dist_cnt : RETICLE_DIST_FIRST_PAGE;
+        return;
+    }
+    uint8_t s = (uint8_t)(RETICLE_DIST_FIRST_PAGE + (page - 1) * RETICLE_DIST_OTHER_PAGE);
+    *start = s;
+    if (s >= dist_cnt) { *show_n = 0; return; }
+    uint8_t left = (uint8_t)(dist_cnt - s);
+    *show_n = (left < RETICLE_DIST_OTHER_PAGE) ? left : RETICLE_DIST_OTHER_PAGE;
+}
+
+static void level2_set_fixed_rows_hidden(bool hide) {
+    lv_obj_t *rows[] = {
+        ui_reticlerow1, ui_reticlerow2, ui_reticlerow3, ui_reticlerow4,
+        ui_reticlerow5, ui_reticlerow6, ui_reticlerow7, ui_reticlerow8
+    };
+    for (uint8_t i = 0; i < sizeof(rows)/sizeof(rows[0]); i++) {
+        if (hide) lv_obj_add_flag(rows[i], LV_OBJ_FLAG_HIDDEN);
+        else      lv_obj_clear_flag(rows[i], LV_OBJ_FLAG_HIDDEN);
+    }
+}
 
 /* ===================== dialog 管理 ===================== */
 typedef enum {
@@ -116,24 +155,46 @@ static void focus_level2_reticle(void) {
 
     lv_group_remove_all_objs(keypad_group);
 
-    /* “显示开关”永远可聚焦 */
-    lv_group_add_obj(keypad_group, ui_reticlerow1);
-
     /* visible=ON 才允许聚焦/编辑后续所有项目 */
     if (visible) {
-        lv_group_add_obj(keypad_group, ui_reticlerow2);
-        lv_group_add_obj(keypad_group, ui_reticlerow3);
-        lv_group_add_obj(keypad_group, ui_reticlerow4);
-        lv_group_add_obj(keypad_group, ui_reticlerow5);
-        lv_group_add_obj(keypad_group, ui_reticlerow6);
-        lv_group_add_obj(keypad_group, ui_reticlerow7);
-        lv_group_add_obj(keypad_group, ui_reticlerow8);
-
-        /* 距离条目按顺序追加到最后（“向后增加”） */
         uint8_t cnt = reticle_distance_mgr_count();
-        for (uint8_t i = 0; i < cnt; i++) {
-            lv_group_add_obj(keypad_group, reticle_distance_mgr_obj(i));
+        uint8_t pages = dist_pages(cnt);
+        if (pages == 0) pages = 1;
+        if (s_dist_page >= pages) s_dist_page = (uint8_t)(pages - 1);
+
+        uint8_t start = 0, show_n = 0;
+        dist_page_range(s_dist_page, cnt, &start, &show_n);
+
+        /* Page0 显示固定 8 项；Page1.. 仅显示距离 */
+        if (s_dist_page == 0) {
+            level2_set_fixed_rows_hidden(false);
+
+            lv_group_add_obj(keypad_group, ui_reticlerow1);
+            lv_group_add_obj(keypad_group, ui_reticlerow2);
+            lv_group_add_obj(keypad_group, ui_reticlerow3);
+            lv_group_add_obj(keypad_group, ui_reticlerow4);
+            lv_group_add_obj(keypad_group, ui_reticlerow5);
+            lv_group_add_obj(keypad_group, ui_reticlerow6);
+            lv_group_add_obj(keypad_group, ui_reticlerow7);
+            lv_group_add_obj(keypad_group, ui_reticlerow8);
+        } else {
+            level2_set_fixed_rows_hidden(true);
         }
+
+        /* 仅显示本页距离条目（隐藏其余距离） */
+        reticle_distance_mgr_set_visible_range(start, show_n);
+        for (uint8_t i = 0; i < show_n; i++) {
+            lv_group_add_obj(keypad_group, reticle_distance_mgr_obj((uint8_t)(start + i)));
+        }
+    } else {
+        /* visible=OFF：只允许操作“显示开关”，其余项隐藏/禁用 */
+        s_dist_page = 0;
+        level2_set_fixed_rows_hidden(false);
+
+        lv_group_add_obj(keypad_group, ui_reticlerow1);
+
+        /* 隐藏所有距离条目 */
+        reticle_distance_mgr_set_visible_range(0, 0);
     }
 }
 
@@ -359,9 +420,15 @@ static void ev_distance_item(lv_event_t *e) {
 
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
-    /* 需求：UP 向后(下一个)，DOWN 向前(上一个) */
-    if (key == LV_KEY_UP) lv_group_focus_next(keypad_group);
-    else if (key == LV_KEY_DOWN) lv_group_focus_prev(keypad_group);
+    /*
+     * 需求：UP 向后(下一个)，DOWN 向前(上一个)
+     * 同时：当距离条目位于“页边界”时，需要触发真正翻页。
+     * 因此这里复用二级通用导航函数 ev_level2_common_nav()，
+     * 避免只在固定行上能翻页、而距离条目上不能翻页导致“1-10循环”。
+     */
+    if (key == LV_KEY_UP || key == LV_KEY_DOWN) {
+        ev_level2_common_nav(e);
+    }
     else if (key == LV_KEY_ENTER) {
         reticle_distance_mgr_set_selected((uint8_t) idx);
         apply_gun_cfg_to_hw();
@@ -444,12 +511,95 @@ static void ev_level2_common_nav(lv_event_t *e) {
     if (lv_event_get_code(e) != LV_EVENT_KEY) return;
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
-    /* 需求：UP 向后(下一个)，DOWN 向前(上一个) */
-    if (key == LV_KEY_UP) lv_group_focus_next(keypad_group);
-    else if (key == LV_KEY_DOWN) lv_group_focus_prev(keypad_group);
-    else if (key == LV_KEY_ESC) {
+    /* 需求：UP 向后(下一个)，DOWN 向前(上一个)
+     * 另外：当距离条目超过 2 条时，二级菜单需要“分页”，
+     * - UP 在当前页最后一条距离上 -> 翻到下一页
+     * - DOWN 在当前页第一条距离上 -> 翻到上一页
+     */
+    if (key == LV_KEY_UP || key == LV_KEY_DOWN) {
+        reticle_cfg_t *cfg = reticle_model_cfg();
+        bool visible = (cfg != NULL) ? cfg->visible : false;
+
+        /* 仅在 Reticle 显示为 ON 时才允许翻页（OFF 时 group 里只有 row1） */
+        if (visible) {
+            uint8_t cnt = reticle_distance_mgr_count();
+            uint8_t pages = dist_pages(cnt);
+            if (pages > 1) {
+                lv_obj_t *focused = lv_group_get_focused(keypad_group);
+
+                uint8_t start = 0, show_n = 0;
+                dist_page_range(s_dist_page, cnt, &start, &show_n);
+
+                lv_obj_t *first_it = (show_n > 0) ? reticle_distance_mgr_obj(start) : NULL;
+                lv_obj_t *last_it  = (show_n > 0) ? reticle_distance_mgr_obj((uint8_t)(start + show_n - 1)) : NULL;
+
+                /* ====== 循环翻页：最后一页最后一条 UP -> 回到第一页显示开关；第一页显示开关 DOWN -> 跳到最后一页最后一条 ====== */
+                if (pages > 1) {
+                    /* 计算最后一页的最后一条距离对象 */
+                    uint8_t lstart = 0, lshow = 0;
+                    dist_page_range((uint8_t)(pages - 1), cnt, &lstart, &lshow);
+                    lv_obj_t *last_page_last = (lshow > 0) ? reticle_distance_mgr_obj((uint8_t)(lstart + lshow - 1)) : NULL;
+
+                    /* UP=向后：在“最后一页最后一条距离”上再按 UP -> 回到第一页并聚焦显示开关 */
+                    if (key == LV_KEY_UP && last_page_last && focused == last_page_last) {
+                        s_dist_page = 0;
+                        focus_level2_reticle();
+                        lv_group_focus_obj(ui_reticlerow1);
+                        return;
+                    }
+
+                    /* DOWN=向前：在“第一页显示开关”上再按 DOWN -> 跳到最后一页并聚焦最后一条距离 */
+                    if (key == LV_KEY_DOWN && focused == ui_reticlerow1 && last_page_last) {
+                        s_dist_page = (uint8_t)(pages - 1);
+                        focus_level2_reticle();
+                        /* 进入最后一页后，聚焦最后一条距离 */
+                        lv_group_focus_obj(last_page_last);
+                        return;
+                    }
+                }
+
+                /* UP=向后：在本页最后一条距离上再按 UP -> 下一页 */
+                if (key == LV_KEY_UP && last_it && focused == last_it) {
+                    if ((uint8_t)(s_dist_page + 1) < pages) {
+                        s_dist_page++;
+                        focus_level2_reticle();
+
+                        uint8_t nstart = 0, nshow = 0;
+                        dist_page_range(s_dist_page, cnt, &nstart, &nshow);
+                        if (nshow > 0) lv_group_focus_obj(reticle_distance_mgr_obj(nstart));
+                        return;
+                    }
+                }
+
+                /* DOWN=向前：在本页第一条距离上再按 DOWN -> 上一页 */
+                if (key == LV_KEY_DOWN && first_it && focused == first_it) {
+                    if (s_dist_page > 0) {
+                        s_dist_page--;
+                        focus_level2_reticle();
+
+                        uint8_t pstart = 0, pshow = 0;
+                        dist_page_range(s_dist_page, cnt, &pstart, &pshow);
+                        if (pshow > 0) lv_group_focus_obj(reticle_distance_mgr_obj((uint8_t)(pstart + pshow - 1)));
+                        else {
+                            /* 回到第一页但没有距离时，落在 Save */
+                            if (s_dist_page == 0) lv_group_focus_obj(ui_reticlerow8);
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+
+        /* 默认焦点移动 */
+        if (key == LV_KEY_UP) lv_group_focus_next(keypad_group);
+        else lv_group_focus_prev(keypad_group);
+        return;
+    }
+
+    if (key == LV_KEY_ESC) {
         reticle_feature_close();
         lv_obj_clear_state(ui_rowreticle, LV_STATE_USER_1);
+        return;
     }
 }
 
@@ -664,7 +814,11 @@ static void ev_add_distance(lv_event_t *e) {
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
     if (key == LV_KEY_ENTER) {
-        distance_editor_open(100, on_add_distance_ok, NULL, NULL, NULL, restore_to_level2, NULL);
+        /* Add Distance：弹窗保持 SquareLine 默认位置；弹窗期间高亮 Add Distance 行 */
+        distance_editor_open_ex(100, ui_reticlerow7, false,
+                                on_add_distance_ok, NULL,
+                                NULL, NULL,
+                                restore_to_level2, NULL);
     } else {
         ev_level2_common_nav(e);
     }
@@ -733,7 +887,11 @@ static void ev_level3(lv_event_t *e) {
 
     if (obj == ui_distancerow3) {
         s_modify_old_idx = sel;
-        distance_editor_open(en->dist, on_modify_ok, NULL, on_modify_cancel, NULL, NULL, NULL);
+        /* Modify Distance：弹窗靠右显示；弹窗期间高亮 Modify Distance 行 */
+        distance_editor_open_ex(en->dist, ui_distancerow3, true,
+                                on_modify_ok, NULL,
+                                on_modify_cancel, NULL,
+                                NULL, NULL);
         return;
     }
 

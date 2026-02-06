@@ -6,6 +6,7 @@
 #define ZKSL_75_6LC_DISTANCE_EDITOR_H
 
 #include <stdbool.h>
+#include "lvgl.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,6 +28,17 @@ typedef void (*distance_editor_restore_cb_t)(void *user);
 
 /** 在 ui_init() 之后调用一次即可 */
 void distance_editor_init(void);
+
+/**
+ * 打开弹窗（扩展版）
+ * @param initial_value   初值（0~9999）
+ * @param owner_obj       触发弹窗的控件；弹窗显示期间会临时加 LV_STATE_USER_1，关闭时清除
+ * @param align_right     true: 弹窗靠右（用于 Modify Distance），false: 保持原位置（用于 Add Distance）
+ */
+void distance_editor_open_ex(int initial_value, lv_obj_t *owner_obj, bool align_right,
+                             distance_editor_ok_cb_t ok_cb, void *ok_user,
+                             distance_editor_cancel_cb_t cancel_cb, void *cancel_user,
+                             distance_editor_restore_cb_t restore_cb, void *restore_user);
 
 /**
  * 打开弹窗

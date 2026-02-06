@@ -10,6 +10,15 @@ extern lv_group_t *keypad_group;
 static bool s_inited = false;
 static bool s_opened = false;
 
+/* 记录弹窗初始坐标（SquareLine 默认位置）：Add Distance 需要保持该位置 */
+static bool s_pos_inited = false;
+static lv_coord_t s_init_x = 0;
+static lv_coord_t s_init_y = 0;
+
+/* 触发弹窗的控件：弹窗期间临时加 LV_STATE_USER_1，关闭时恢复 */
+static lv_obj_t *s_owner_obj = NULL;
+static bool s_owner_had_user1 = false;
+
 static distance_editor_ok_cb_t s_ok_cb = NULL;
 static void *s_ok_user = NULL;
 static distance_editor_cancel_cb_t s_cancel_cb = NULL;
@@ -72,6 +81,15 @@ static void close_internal(bool call_cancel) {
     s_opened = false;
 
     lv_obj_add_flag(ui_editdistance, LV_OBJ_FLAG_HIDDEN);
+
+    /* 关闭弹窗时恢复触发控件的 USER_1 高亮 */
+    if (s_owner_obj) {
+        if (!s_owner_had_user1) {
+            lv_obj_clear_state(s_owner_obj, LV_STATE_USER_1);
+        }
+        s_owner_obj = NULL;
+        s_owner_had_user1 = false;
+    }
 
     if (call_cancel && s_cancel_cb) s_cancel_cb(s_cancel_user);
     if (s_restore_cb) s_restore_cb(s_restore_user);
@@ -216,10 +234,10 @@ void distance_editor_init(void) {
     hide_all_arrows();
 }
 
-void distance_editor_open(int initial_value,
-                          distance_editor_ok_cb_t ok_cb, void *ok_user,
-                          distance_editor_cancel_cb_t cancel_cb, void *cancel_user,
-                          distance_editor_restore_cb_t restore_cb, void *restore_user) {
+void distance_editor_open_ex(int initial_value, lv_obj_t *owner_obj, bool align_right,
+                             distance_editor_ok_cb_t ok_cb, void *ok_user,
+                             distance_editor_cancel_cb_t cancel_cb, void *cancel_user,
+                             distance_editor_restore_cb_t restore_cb, void *restore_user) {
     distance_editor_init();
 
     s_ok_cb = ok_cb;
@@ -228,6 +246,21 @@ void distance_editor_open(int initial_value,
     s_cancel_user = cancel_user;
     s_restore_cb = restore_cb;
     s_restore_user = restore_user;
+
+    /* 记录 SquareLine 默认坐标（只记录一次） */
+    if (!s_pos_inited) {
+        s_init_x = lv_obj_get_x(ui_editdistance);
+        s_init_y = lv_obj_get_y(ui_editdistance);
+        s_pos_inited = true;
+    }
+
+    /* 标记触发控件高亮（弹窗期间） */
+    s_owner_obj = owner_obj;
+    s_owner_had_user1 = false;
+    if (s_owner_obj) {
+        s_owner_had_user1 = lv_obj_has_state(s_owner_obj, LV_STATE_USER_1);
+        lv_obj_add_state(s_owner_obj, LV_STATE_USER_1);
+    }
 
     set_digits_from_value(initial_value);
     refresh_digit_labels();
@@ -241,23 +274,36 @@ void distance_editor_open(int initial_value,
 
     lv_obj_remove_flag(ui_editdistance, LV_OBJ_FLAG_HIDDEN);
 
-    /*
-     * 让“修改距离/添加距离”弹窗尽量靠右显示，避免遮挡左侧菜单列。
-     * 以父对象（通常是 ui_MainPage）为参照，右边留 20px 边距。
+    /* 位置策略：
+     * - Add Distance：保持 SquareLine 默认位置（避免挡住右侧刻度/其它 UI）
+     * - Modify Distance：靠右显示，避免挡住左侧菜单列
      */
-    {
-        lv_obj_t *parent = lv_obj_get_parent(ui_editdistance);
-        if (parent) {
-            lv_coord_t pw = lv_obj_get_width(parent);
-            lv_coord_t w  = lv_obj_get_width(ui_editdistance);
-            lv_coord_t x  = pw - w - 20;
-            if (x < 0) x = 0;
-            lv_obj_set_pos(ui_editdistance, x, 40);
-        }
+    if (align_right) {
+        // lv_obj_t *parent = lv_obj_get_parent(ui_editdistance);
+        // if (parent) {
+        //     lv_coord_t pw = lv_obj_get_width(parent);
+        //     lv_coord_t w  = lv_obj_get_width(ui_editdistance);
+        //     lv_coord_t x  = pw - w - 20;
+        //     if (x < 0) x = 0;
+        //     lv_obj_set_pos(ui_editdistance, x, 40);
+        //     lv_obj_set_pos(ui_editdistance, x + 180, s_init_y);
+        // }
+        lv_obj_set_pos(ui_editdistance, s_init_x + 190, s_init_y);
+    } else {
+        lv_obj_set_pos(ui_editdistance, s_init_x, s_init_y);
     }
     s_opened = true;
 
     focus_to_popup();
+}
+
+void distance_editor_open(int initial_value,
+                          distance_editor_ok_cb_t ok_cb, void *ok_user,
+                          distance_editor_cancel_cb_t cancel_cb, void *cancel_user,
+                          distance_editor_restore_cb_t restore_cb, void *restore_user) {
+    /* 兼容旧接口：默认按 Add Distance 的策略（不右移、无 owner 高亮） */
+    distance_editor_open_ex(initial_value, NULL, false, ok_cb, ok_user, cancel_cb, cancel_user, restore_cb,
+                            restore_user);
 }
 
 bool distance_editor_is_open(void) { return s_opened; }

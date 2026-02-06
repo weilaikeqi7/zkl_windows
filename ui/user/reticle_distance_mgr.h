@@ -21,6 +21,9 @@ uint8_t reticle_distance_mgr_count(void);
 reticle_distance_entry_t *reticle_distance_mgr_entry(uint8_t idx);
 lv_obj_t *reticle_distance_mgr_obj(uint8_t idx);
 
+/* 分页显示：每页最多显示 per_page 条距离，其余隐藏（仍保留对象与数据） */
+void reticle_distance_mgr_set_visible_range(uint8_t start, uint8_t count);
+
 int reticle_distance_mgr_find_idx_by_obj(lv_obj_t *obj);
 
 /* --- 选中/优先 --- */
