@@ -174,6 +174,9 @@ bool reticle_distance_mgr_insert_sorted(int dist, uint8_t *new_idx, lv_obj_t **n
 bool reticle_distance_mgr_delete(uint8_t idx) {
     if (idx >= s_cnt) return false;
 
+    /* 需求：每个枪型必须至少保留 1 个距离标签；当仅剩 1 个时禁止删除 */
+    if (s_cnt <= 1) return false;
+
     lv_obj_del(s_obj[idx]);
 
     for (uint8_t i = idx; i + 1 < s_cnt; i++) {

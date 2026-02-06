@@ -8,11 +8,14 @@
 
 #ifdef __cplusplus
 extern "C" {
+
 #endif
 
 // SCREEN: ui_ScrFileMgr
 extern void ui_ScrFileMgr_screen_init(void);
+
 extern void ui_ScrFileMgr_screen_destroy(void);
+
 extern lv_obj_t * ui_ScrFileMgr;
 extern lv_obj_t * ui_proot;
 extern lv_obj_t * ui_ptopbar;
@@ -57,4 +60,3 @@ extern lv_obj_t * ui_imgarrowdown;
 #endif
 
 #endif
-

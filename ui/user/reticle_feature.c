@@ -9,14 +9,35 @@
 #include "reticle_model.h"
 
 /* forward declarations */
-static void ev_distance_item(lv_event_t *e);
-static void ev_level2_common_nav(lv_event_t *e);
+static void ev_distance_item(lv_event_t * e);
+
+static void ev_level2_common_nav(lv_event_t * e);
+
 /* ===================== 观察区域/硬件层接口占位（你项目中自行对接） ===================== */
-static void hw_reticle_set_visible(bool en) { (void) en; }
-static void hw_reticle_set_rotate(bool en) { (void) en; }
-static void hw_reticle_set_style(uint8_t s) { (void) s; }
-static void hw_reticle_set_color(uint8_t c) { (void) c; }
-static void hw_reticle_apply_distance(const reticle_distance_entry_t *e) { (void) e; }
+static void hw_reticle_set_visible(bool en)
+{
+    (void)en;
+}
+
+static void hw_reticle_set_rotate(bool en)
+{
+    (void)en;
+}
+
+static void hw_reticle_set_style(uint8_t s)
+{
+    (void)s;
+}
+
+static void hw_reticle_set_color(uint8_t c)
+{
+    (void)c;
+}
+
+static void hw_reticle_apply_distance(const reticle_distance_entry_t * e)
+{
+    (void)e;
+}
 
 /* ===================== 状态/dirty ===================== */
 static bool s_opened = false;
@@ -31,34 +52,41 @@ static uint8_t s_dist_page = 0;
 #define RETICLE_DIST_FIRST_PAGE 2
 #define RETICLE_DIST_OTHER_PAGE 10
 
-static uint8_t dist_pages(uint8_t dist_cnt) {
-    if (dist_cnt <= RETICLE_DIST_FIRST_PAGE) return 1;
+static uint8_t dist_pages(uint8_t dist_cnt)
+{
+    if(dist_cnt <= RETICLE_DIST_FIRST_PAGE) return 1;
     uint8_t remain = (uint8_t)(dist_cnt - RETICLE_DIST_FIRST_PAGE);
     uint8_t p = (uint8_t)((remain + RETICLE_DIST_OTHER_PAGE - 1) / RETICLE_DIST_OTHER_PAGE);
     return (uint8_t)(1 + (p ? p : 1));
 }
 
-static void dist_page_range(uint8_t page, uint8_t dist_cnt, uint8_t *start, uint8_t *show_n) {
-    if (page == 0) {
+static void dist_page_range(uint8_t page, uint8_t dist_cnt, uint8_t * start, uint8_t * show_n)
+{
+    if(page == 0) {
         *start = 0;
         *show_n = (dist_cnt < RETICLE_DIST_FIRST_PAGE) ? dist_cnt : RETICLE_DIST_FIRST_PAGE;
         return;
     }
     uint8_t s = (uint8_t)(RETICLE_DIST_FIRST_PAGE + (page - 1) * RETICLE_DIST_OTHER_PAGE);
     *start = s;
-    if (s >= dist_cnt) { *show_n = 0; return; }
+    if(s >= dist_cnt) {
+        *show_n = 0;
+        return;
+    }
     uint8_t left = (uint8_t)(dist_cnt - s);
     *show_n = (left < RETICLE_DIST_OTHER_PAGE) ? left : RETICLE_DIST_OTHER_PAGE;
 }
 
-static void level2_set_fixed_rows_hidden(bool hide) {
-    lv_obj_t *rows[] = {
+static void level2_set_fixed_rows_hidden(bool hide)
+{
+    lv_obj_t * rows[] = {
         ui_reticlerow1, ui_reticlerow2, ui_reticlerow3, ui_reticlerow4,
         ui_reticlerow5, ui_reticlerow6, ui_reticlerow7, ui_reticlerow8
     };
-    for (uint8_t i = 0; i < sizeof(rows)/sizeof(rows[0]); i++) {
-        if (hide) lv_obj_add_flag(rows[i], LV_OBJ_FLAG_HIDDEN);
-        else      lv_obj_clear_flag(rows[i], LV_OBJ_FLAG_HIDDEN);
+    for(uint8_t i = 0; i < sizeof(rows) / sizeof(rows[0]); i++) {
+        if(hide) lv_obj_add_flag(rows[i], LV_OBJ_FLAG_HIDDEN);
+        else
+            lv_obj_clear_flag(rows[i], LV_OBJ_FLAG_HIDDEN);
     }
 }
 
@@ -71,31 +99,33 @@ typedef enum {
 } dlg_kind_t;
 
 static dlg_kind_t s_dlg_kind = DLG_NONE;
-static lv_obj_t *s_restore_focus = NULL;
-static lv_obj_t *s_dlg_zero = NULL; // 动态创建的 Zero dialog（组件 ui_comp_dialogeg）
+static lv_obj_t * s_restore_focus = NULL;
+static lv_obj_t * s_dlg_zero = NULL; // 动态创建的 Zero dialog（组件 ui_comp_dialogeg）
 
 /*
  * 弹框交互高亮：
  * - 弹框打开期间，把“触发弹框的控件”临时标记为 LV_STATE_USER_1（便于做高亮/提示正在操作）
  * - 弹框关闭时恢复（若原本没有 USER_1，则清除；若原本就有 USER_1，则保持不变）
  */
-static lv_obj_t *s_dialog_owner = NULL;
+static lv_obj_t * s_dialog_owner = NULL;
 static bool s_dialog_owner_had_user1 = false;
 
-static void dialog_owner_mark_open(lv_obj_t *owner) {
+static void dialog_owner_mark_open(lv_obj_t * owner)
+{
     s_dialog_owner = owner;
     s_dialog_owner_had_user1 = false;
-    if (!owner) return;
+    if(!owner) return;
 
     s_dialog_owner_had_user1 = lv_obj_has_state(owner, LV_STATE_USER_1);
-    if (!s_dialog_owner_had_user1) {
+    if(!s_dialog_owner_had_user1) {
         lv_obj_add_state(owner, LV_STATE_USER_1);
     }
 }
 
-static void dialog_owner_mark_close(void) {
-    if (s_dialog_owner) {
-        if (!s_dialog_owner_had_user1) {
+static void dialog_owner_mark_close(void)
+{
+    if(s_dialog_owner) {
+        if(!s_dialog_owner_had_user1) {
             lv_obj_clear_state(s_dialog_owner, LV_STATE_USER_1);
         }
     }
@@ -104,13 +134,15 @@ static void dialog_owner_mark_close(void) {
 }
 
 /* ===================== 辅助：UI子菜单显示控制 ===================== */
-static void hide_all_submenus(void) {
+static void hide_all_submenus(void)
+{
     lv_obj_add_flag(ui_contmenureticle, LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(ui_contmenudistance, LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(ui_contmenucalibration, LV_OBJ_FLAG_HIDDEN);
 }
 
-static void focus_page2_main_only(void) {
+static void focus_page2_main_only(void)
+{
     lv_group_remove_all_objs(keypad_group);
     lv_group_add_obj(keypad_group, ui_rowwifi);
     lv_group_add_obj(keypad_group, ui_rowtilt);
@@ -122,83 +154,48 @@ static void focus_page2_main_only(void) {
     lv_group_focus_obj(ui_rowreticle);
 }
 
-static void set_level2_children_enabled(bool enable) {
-    /* 当 visible=OFF 时：只有 “显示开关” 可以获得焦点，其余行/距离条目禁用 */
-    lv_obj_t *rows[] = {
-        ui_reticlerow2, ui_reticlerow3, ui_reticlerow4, ui_reticlerow5,
-        ui_reticlerow6, ui_reticlerow7, ui_reticlerow8
-    };
-
-    for (uint8_t i = 0; i < sizeof(rows) / sizeof(rows[0]); i++) {
-        if (enable)
-            lv_obj_clear_state(rows[i], LV_STATE_DISABLED);
-        else lv_obj_add_state(rows[i], LV_STATE_DISABLED);
-    }
-
-    /* 距离条目也同步禁用/启用（显示上仍存在，但不可被聚焦/进入） */
-    uint8_t cnt = reticle_distance_mgr_count();
-    for (uint8_t i = 0; i < cnt; i++) {
-        lv_obj_t *it = reticle_distance_mgr_obj(i);
-        if (!it) continue;
-        if (enable)
-            lv_obj_clear_state(it, LV_STATE_DISABLED);
-        else lv_obj_add_state(it, LV_STATE_DISABLED);
-    }
-}
-
-static void focus_level2_reticle(void) {
+static void focus_level2_reticle(void)
+{
     /* 注意：该函数只负责重建 group，不强制设置焦点（由调用方决定） */
-    reticle_cfg_t *cfg = reticle_model_cfg();
-    bool visible = (cfg != NULL) ? cfg->visible : false;
-
-    set_level2_children_enabled(visible);
-
     lv_group_remove_all_objs(keypad_group);
 
-    /* visible=ON 才允许聚焦/编辑后续所有项目 */
-    if (visible) {
-        uint8_t cnt = reticle_distance_mgr_count();
-        uint8_t pages = dist_pages(cnt);
-        if (pages == 0) pages = 1;
-        if (s_dist_page >= pages) s_dist_page = (uint8_t)(pages - 1);
+    /* 需求变更：显示开关(Show) 与底下选项无关。
+     * 即使 Show=OFF，也允许操作下面所有选项。
+     * 因此：不再根据 cfg->visible 禁用/隐藏后续行和距离条目。
+     */
+    uint8_t cnt = reticle_distance_mgr_count();
+    uint8_t pages = dist_pages(cnt);
+    if(pages == 0) pages = 1;
+    if(s_dist_page >= pages) s_dist_page = (uint8_t)(pages - 1);
 
-        uint8_t start = 0, show_n = 0;
-        dist_page_range(s_dist_page, cnt, &start, &show_n);
+    uint8_t start = 0, show_n = 0;
+    dist_page_range(s_dist_page, cnt, &start, &show_n);
 
-        /* Page0 显示固定 8 项；Page1.. 仅显示距离 */
-        if (s_dist_page == 0) {
-            level2_set_fixed_rows_hidden(false);
-
-            lv_group_add_obj(keypad_group, ui_reticlerow1);
-            lv_group_add_obj(keypad_group, ui_reticlerow2);
-            lv_group_add_obj(keypad_group, ui_reticlerow3);
-            lv_group_add_obj(keypad_group, ui_reticlerow4);
-            lv_group_add_obj(keypad_group, ui_reticlerow5);
-            lv_group_add_obj(keypad_group, ui_reticlerow6);
-            lv_group_add_obj(keypad_group, ui_reticlerow7);
-            lv_group_add_obj(keypad_group, ui_reticlerow8);
-        } else {
-            level2_set_fixed_rows_hidden(true);
-        }
-
-        /* 仅显示本页距离条目（隐藏其余距离） */
-        reticle_distance_mgr_set_visible_range(start, show_n);
-        for (uint8_t i = 0; i < show_n; i++) {
-            lv_group_add_obj(keypad_group, reticle_distance_mgr_obj((uint8_t)(start + i)));
-        }
-    } else {
-        /* visible=OFF：只允许操作“显示开关”，其余项隐藏/禁用 */
-        s_dist_page = 0;
+    /* Page0 显示固定 8 项；Page1.. 仅显示距离 */
+    if(s_dist_page == 0) {
         level2_set_fixed_rows_hidden(false);
 
         lv_group_add_obj(keypad_group, ui_reticlerow1);
+        lv_group_add_obj(keypad_group, ui_reticlerow2);
+        lv_group_add_obj(keypad_group, ui_reticlerow3);
+        lv_group_add_obj(keypad_group, ui_reticlerow4);
+        lv_group_add_obj(keypad_group, ui_reticlerow5);
+        lv_group_add_obj(keypad_group, ui_reticlerow6);
+        lv_group_add_obj(keypad_group, ui_reticlerow7);
+        lv_group_add_obj(keypad_group, ui_reticlerow8);
+    } else {
+        level2_set_fixed_rows_hidden(true);
+    }
 
-        /* 隐藏所有距离条目 */
-        reticle_distance_mgr_set_visible_range(0, 0);
+    /* 仅显示本页距离条目（隐藏其余距离） */
+    reticle_distance_mgr_set_visible_range(start, show_n);
+    for(uint8_t i = 0; i < show_n; i++) {
+        lv_group_add_obj(keypad_group, reticle_distance_mgr_obj((uint8_t)(start + i)));
     }
 }
 
-static void focus_level3_distance(void) {
+static void focus_level3_distance(void)
+{
     lv_group_remove_all_objs(keypad_group);
     lv_group_add_obj(keypad_group, ui_distancerow1); // Calibration Setting
     lv_group_add_obj(keypad_group, ui_distancerow2); // Set Primacy Distance
@@ -206,7 +203,8 @@ static void focus_level3_distance(void) {
     lv_group_add_obj(keypad_group, ui_distancerow4); // Delete Distance
 }
 
-static void focus_level4_calibration(void) {
+static void focus_level4_calibration(void)
+{
     lv_group_remove_all_objs(keypad_group);
     lv_group_add_obj(keypad_group, ui_calibrationrow1); // X
     lv_group_add_obj(keypad_group, ui_calibrationrow2); // Y
@@ -216,13 +214,15 @@ static void focus_level4_calibration(void) {
 }
 
 /* ===================== 模型 <-> UI 同步 ===================== */
-static void ui_set_rowlabel_value(lv_obj_t *rowlabel, const char *fmt, int v) {
+static void ui_set_rowlabel_value(lv_obj_t * rowlabel, const char * fmt, int v)
+{
     lv_label_set_text_fmt(ui_comp_get_child(rowlabel, UI_COMP_ROWLABEL_CONTPILL1_ITEMLABEL1), fmt, v);
 }
 
-static void ui_set_rowswitch_checked(lv_obj_t *rowswitch, bool checked) {
-    lv_obj_t *sw = ui_comp_get_child(rowswitch, UI_COMP_ROWSWITCH_CONTPILL_SWITCH);
-    if (checked) {
+static void ui_set_rowswitch_checked(lv_obj_t * rowswitch, bool checked)
+{
+    lv_obj_t * sw = ui_comp_get_child(rowswitch, UI_COMP_ROWSWITCH_CONTPILL_SWITCH);
+    if(checked) {
         lv_obj_add_state(sw, LV_STATE_CHECKED);
         lv_obj_send_event(sw, LV_EVENT_VALUE_CHANGED, NULL);
     } else {
@@ -231,8 +231,9 @@ static void ui_set_rowswitch_checked(lv_obj_t *rowswitch, bool checked) {
     }
 }
 
-static void sync_distance_mgr_to_model(void) {
-    reticle_gun_cfg_t *gc = reticle_model_cur_gun_cfg();
+static void sync_distance_mgr_to_model(void)
+{
+    reticle_gun_cfg_t * gc = reticle_model_cur_gun_cfg();
     reticle_distance_mgr_save_to_cfg(gc);
 }
 
@@ -240,9 +241,10 @@ static void sync_distance_mgr_to_model(void) {
  * 全局(与枪型无关)的 UI 刷新：只在进入 Reticle 二级菜单/初始化时刷新一次即可。
  * 切换枪型时不应触碰显示/旋转开关，避免 UI 被意外“刷回默认值”。
  */
-static void load_global_cfg_to_ui(void) {
-    reticle_cfg_t *cfg = reticle_model_cfg();
-    if (!cfg) return;
+static void load_global_cfg_to_ui(void)
+{
+    reticle_cfg_t * cfg = reticle_model_cfg();
+    if(!cfg) return;
 
     ui_set_rowswitch_checked(ui_reticlerow1, cfg->visible);
     ui_set_rowswitch_checked(ui_reticlerow2, cfg->rotate);
@@ -252,43 +254,62 @@ static void load_global_cfg_to_ui(void) {
  * 当前枪型 UI 刷新：只刷新与枪型相关的项目（Gun/Style/Color/Distances）。
  * 注意：这里不要刷新显示/旋转开关。
  */
-static void load_gun_cfg_to_ui(void) {
-    reticle_gun_cfg_t *gc = reticle_model_cur_gun_cfg();
+static void load_gun_cfg_to_ui(void)
+{
+    reticle_gun_cfg_t * gc = reticle_model_cur_gun_cfg();
 
     // 2级固定行：枪型相关数值
-    ui_set_rowlabel_value(ui_reticlerow3, "G%d", (int) (reticle_model_get_cur_gun() + 1));
-    ui_set_rowlabel_value(ui_reticlerow4, "S%d", (int) gc->style);
-    ui_set_rowlabel_value(ui_reticlerow5, "C%d", (int) gc->color);
+    ui_set_rowlabel_value(ui_reticlerow3, "G%d", (int)(reticle_model_get_cur_gun() + 1));
+    ui_set_rowlabel_value(ui_reticlerow4, "S%d", (int)gc->style);
+    ui_set_rowlabel_value(ui_reticlerow5, "C%d", (int)gc->color);
 
     // 绑定距离列表
     reticle_distance_mgr_load_from_cfg(gc, ev_distance_item); // 事件回调稍后统一绑定（见 bind_events）
     // 注意：load_from_cfg 会把 primary icon、selected style 都刷好
 }
 
-static void apply_gun_cfg_to_hw(void) {
-    reticle_cfg_t *cfg = reticle_model_cfg();
-    reticle_gun_cfg_t *gc = reticle_model_cur_gun_cfg();
+static void apply_gun_cfg_to_hw(void)
+{
+    reticle_cfg_t * cfg = reticle_model_cfg();
+    reticle_gun_cfg_t * gc = reticle_model_cur_gun_cfg();
     hw_reticle_set_visible(cfg->visible);
     hw_reticle_set_rotate(cfg->rotate);
     hw_reticle_set_style(gc->style);
     hw_reticle_set_color(gc->color);
 
     uint8_t sel = reticle_distance_mgr_get_selected();
-    reticle_distance_entry_t *e = reticle_distance_mgr_entry(sel);
-    if (e) hw_reticle_apply_distance(e);
+    reticle_distance_entry_t * e = reticle_distance_mgr_entry(sel);
+    if(e) hw_reticle_apply_distance(e);
 }
 
 /* ===================== dialog 通用 ===================== */
-static lv_obj_t *dialog_ok(lv_obj_t *dlg) { return ui_comp_get_child(dlg, UI_COMP_DIALOGEG_DIALOGOK); }
-static lv_obj_t *dialog_cancel(lv_obj_t *dlg) { return ui_comp_get_child(dlg, UI_COMP_DIALOGEG_DIALOGCANCEL); }
-static lv_obj_t *dialog_text_label(lv_obj_t *dlg) { return ui_comp_get_child(dlg, UI_COMP_DIALOGEG_DIALOGTEXT_LABEL); }
-static lv_obj_t *dialog_ok_label(lv_obj_t *dlg) { return ui_comp_get_child(dlg, UI_COMP_DIALOGEG_DIALOGOK_LABEL); }
+static lv_obj_t * dialog_ok(lv_obj_t * dlg)
+{
+    return ui_comp_get_child(dlg, UI_COMP_DIALOGEG_DIALOGOK);
+}
 
-static lv_obj_t *dialog_cancel_label(lv_obj_t *dlg) {
+static lv_obj_t * dialog_cancel(lv_obj_t * dlg)
+{
+    return ui_comp_get_child(dlg, UI_COMP_DIALOGEG_DIALOGCANCEL);
+}
+
+static lv_obj_t * dialog_text_label(lv_obj_t * dlg)
+{
+    return ui_comp_get_child(dlg, UI_COMP_DIALOGEG_DIALOGTEXT_LABEL);
+}
+
+static lv_obj_t * dialog_ok_label(lv_obj_t * dlg)
+{
+    return ui_comp_get_child(dlg, UI_COMP_DIALOGEG_DIALOGOK_LABEL);
+}
+
+static lv_obj_t * dialog_cancel_label(lv_obj_t * dlg)
+{
     return ui_comp_get_child(dlg, UI_COMP_DIALOGEG_DIALOGCANCEL_LABEL);
 }
 
-static void dialog_close(lv_obj_t *dlg) {
+static void dialog_close(lv_obj_t * dlg)
+{
     lv_obj_add_flag(dlg, LV_OBJ_FLAG_HIDDEN);
     s_dlg_kind = DLG_NONE;
 
@@ -296,16 +317,16 @@ static void dialog_close(lv_obj_t *dlg) {
     dialog_owner_mark_close();
 
     // 恢复焦点
-    if (s_restore_focus) {
+    if(s_restore_focus) {
         /*
          * 弹框可能在任意层级打开（2/3/4级）。
          * 恢复焦点时按当前可见的菜单层级重建 group，确保焦点回到触发控件。
          */
-        if (!lv_obj_has_flag(ui_contmenucalibration, LV_OBJ_FLAG_HIDDEN)) {
+        if(!lv_obj_has_flag(ui_contmenucalibration, LV_OBJ_FLAG_HIDDEN)) {
             focus_level4_calibration();
-        } else if (!lv_obj_has_flag(ui_contmenudistance, LV_OBJ_FLAG_HIDDEN)) {
+        } else if(!lv_obj_has_flag(ui_contmenudistance, LV_OBJ_FLAG_HIDDEN)) {
             focus_level3_distance();
-        } else if (!lv_obj_has_flag(ui_contmenureticle, LV_OBJ_FLAG_HIDDEN)) {
+        } else if(!lv_obj_has_flag(ui_contmenureticle, LV_OBJ_FLAG_HIDDEN)) {
             focus_level2_reticle();
         } else {
             focus_page2_main_only();
@@ -316,7 +337,8 @@ static void dialog_close(lv_obj_t *dlg) {
     }
 }
 
-static void dialog_open(lv_obj_t *dlg, dlg_kind_t kind, lv_obj_t *restore_focus) {
+static void dialog_open(lv_obj_t * dlg, dlg_kind_t kind, lv_obj_t * restore_focus)
+{
     s_dlg_kind = kind;
     s_restore_focus = restore_focus;
 
@@ -333,8 +355,9 @@ static void dialog_open(lv_obj_t *dlg, dlg_kind_t kind, lv_obj_t *restore_focus)
 }
 
 /* ===================== 运行时创建 Zero Action dialog ===================== */
-static void ensure_zero_dialog(void) {
-    if (s_dlg_zero) return;
+static void ensure_zero_dialog(void)
+{
+    if(s_dlg_zero) return;
 
     // 把 dialog 放在 MainPage 上层（不依赖 SquareLine 生成对象）
     s_dlg_zero = ui_dialogeg_create(ui_MainPage);
@@ -350,7 +373,8 @@ static void ensure_zero_dialog(void) {
 /* ===================== 子菜单切换 ===================== */
 static void set_selected_distance_editing(bool en);
 
-static void show_level2(void) {
+static void show_level2(void)
+{
     lv_obj_remove_flag(ui_contmenureticle, LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(ui_contmenudistance, LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(ui_contmenucalibration, LV_OBJ_FLAG_HIDDEN);
@@ -365,13 +389,14 @@ static void show_level2(void) {
     set_selected_distance_editing(false);
 
     // 默认选中距离列表第一条（仅用于高亮/主距标识），默认焦点在“显示开关”
-    if (reticle_distance_mgr_count() > 0) {
+    if(reticle_distance_mgr_count() > 0) {
         reticle_distance_mgr_set_selected(0);
     }
     lv_group_focus_obj(ui_reticlerow1);
 }
 
-static void show_level3(void) {
+static void show_level3(void)
+{
     lv_obj_remove_flag(ui_contmenudistance, LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(ui_contmenucalibration, LV_OBJ_FLAG_HIDDEN);
 
@@ -381,7 +406,14 @@ static void show_level3(void) {
     lv_group_focus_obj(ui_distancerow1);
 }
 
-static void show_level4(void) {
+static void show_level4(void)
+{
+    /* 需求变更：进入四级菜单时，隐藏前面三个菜单（主菜单/二级/三级），仅显示四级 */
+    lv_obj_add_flag(ui_contpage2, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_lbltitle, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_contmenureticle, LV_OBJ_FLAG_HIDDEN);
+    lv_obj_add_flag(ui_contmenudistance, LV_OBJ_FLAG_HIDDEN);
+
     lv_obj_remove_flag(ui_contmenucalibration, LV_OBJ_FLAG_HIDDEN);
 
     uint8_t idx = reticle_distance_mgr_get_selected();
@@ -400,23 +432,25 @@ static void show_level4(void) {
  * - LV_STATE_USER_1：距离条目正在编辑（临时态），编辑结束清掉 USER_1
  *   若该条同时是优先距离，清掉 USER_1 后会自然回到 USER_2 样式
  */
-static void set_selected_distance_editing(bool en) {
-    lv_obj_t *item = reticle_distance_mgr_obj(reticle_distance_mgr_get_selected());
-    if (!item) return;
+static void set_selected_distance_editing(bool en)
+{
+    lv_obj_t * item = reticle_distance_mgr_obj(reticle_distance_mgr_get_selected());
+    if(!item) return;
 
-    if (en) lv_obj_add_state(item, LV_STATE_USER_1);
+    if(en) lv_obj_add_state(item, LV_STATE_USER_1);
     else
         lv_obj_clear_state(item, LV_STATE_USER_1);
 }
 
 
 /* ===================== 事件：动态距离条目（2级） ===================== */
-static void ev_distance_item(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_distance_item(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
 
-    lv_obj_t *obj = lv_event_get_target(e);
+    lv_obj_t * obj = lv_event_get_target(e);
     int idx = reticle_distance_mgr_find_idx_by_obj(obj);
-    if (idx < 0) return;
+    if(idx < 0) return;
 
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
@@ -426,22 +460,22 @@ static void ev_distance_item(lv_event_t *e) {
      * 因此这里复用二级通用导航函数 ev_level2_common_nav()，
      * 避免只在固定行上能翻页、而距离条目上不能翻页导致“1-10循环”。
      */
-    if (key == LV_KEY_UP || key == LV_KEY_DOWN) {
+    if(key == LV_KEY_UP || key == LV_KEY_DOWN) {
         ev_level2_common_nav(e);
-    }
-    else if (key == LV_KEY_ENTER) {
-        reticle_distance_mgr_set_selected((uint8_t) idx);
+    } else if(key == LV_KEY_ENTER) {
+        reticle_distance_mgr_set_selected((uint8_t)idx);
         apply_gun_cfg_to_hw();
         show_level3();
-    } else if (key == LV_KEY_ESC) {
+    } else if(key == LV_KEY_ESC) {
         reticle_feature_close();
         lv_obj_clear_state(ui_rowreticle, LV_STATE_USER_1);
     }
 }
 
 /* ===================== distance editor：Add/Modify 回调 ===================== */
-static void restore_to_level2(void *user) {
-    (void) user;
+static void restore_to_level2(void * user)
+{
+    (void)user;
     // 回到二级：确保距离条目不处于编辑态
     set_selected_distance_editing(false);
     focus_level2_reticle();
@@ -449,35 +483,37 @@ static void restore_to_level2(void *user) {
     lv_group_focus_obj(ui_reticlerow7);
 }
 
-static void on_add_distance_ok(int v, void *user) {
-    (void) user;
+static void on_add_distance_ok(int v, void * user)
+{
+    (void)user;
 
     uint8_t new_idx = 0;
-    lv_obj_t *new_obj = NULL;
+    lv_obj_t * new_obj = NULL;
 
-    if (!reticle_distance_mgr_insert_sorted(v, &new_idx, &new_obj)) {
+    if(!reticle_distance_mgr_insert_sorted(v, &new_idx, &new_obj)) {
         restore_to_level2(NULL);
         return;
     }
 
     // 新条目必须绑定事件 + 加入 group
-    if (new_obj) {
+    if(new_obj) {
         lv_obj_add_event_cb(new_obj, ev_distance_item, LV_EVENT_ALL, NULL);
     }
 
     // 修改即 dirty
     reticle_model_mark_dirty();
     sync_distance_mgr_to_model();
-    (void) new_idx;
+    (void)new_idx;
 }
 
 static uint8_t s_modify_old_idx = 0;
 
-static void on_modify_ok(int new_val, void *user) {
-    (void) user;
+static void on_modify_ok(int new_val, void * user)
+{
+    (void)user;
 
     uint8_t new_idx = s_modify_old_idx;
-    if (!reticle_distance_mgr_modify(s_modify_old_idx, new_val, &new_idx)) {
+    if(!reticle_distance_mgr_modify(s_modify_old_idx, new_val, &new_idx)) {
         // 修改失败（重复）-> 回到三级聚焦 Modify
         focus_level3_distance();
         lv_group_focus_obj(ui_distancerow3);
@@ -500,15 +536,17 @@ static void on_modify_ok(int new_val, void *user) {
     lv_group_focus_obj(reticle_distance_mgr_obj(new_idx));
 }
 
-static void on_modify_cancel(void *user) {
-    (void) user;
+static void on_modify_cancel(void * user)
+{
+    (void)user;
     focus_level3_distance();
     lv_group_focus_obj(ui_distancerow3);
 }
 
 /* ===================== 2级：固定行事件（显示/旋转/Gun/Style/Color/Reset/Add/Save） ===================== */
-static void ev_level2_common_nav(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_level2_common_nav(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
     /* 需求：UP 向后(下一个)，DOWN 向前(上一个)
@@ -516,32 +554,34 @@ static void ev_level2_common_nav(lv_event_t *e) {
      * - UP 在当前页最后一条距离上 -> 翻到下一页
      * - DOWN 在当前页第一条距离上 -> 翻到上一页
      */
-    if (key == LV_KEY_UP || key == LV_KEY_DOWN) {
-        reticle_cfg_t *cfg = reticle_model_cfg();
+    if(key == LV_KEY_UP || key == LV_KEY_DOWN) {
+        reticle_cfg_t * cfg = reticle_model_cfg();
         bool visible = (cfg != NULL) ? cfg->visible : false;
 
         /* 仅在 Reticle 显示为 ON 时才允许翻页（OFF 时 group 里只有 row1） */
-        if (visible) {
+        if(visible) {
             uint8_t cnt = reticle_distance_mgr_count();
             uint8_t pages = dist_pages(cnt);
-            if (pages > 1) {
-                lv_obj_t *focused = lv_group_get_focused(keypad_group);
+            if(pages > 1) {
+                lv_obj_t * focused = lv_group_get_focused(keypad_group);
 
                 uint8_t start = 0, show_n = 0;
                 dist_page_range(s_dist_page, cnt, &start, &show_n);
 
-                lv_obj_t *first_it = (show_n > 0) ? reticle_distance_mgr_obj(start) : NULL;
-                lv_obj_t *last_it  = (show_n > 0) ? reticle_distance_mgr_obj((uint8_t)(start + show_n - 1)) : NULL;
+                lv_obj_t * first_it = (show_n > 0) ? reticle_distance_mgr_obj(start) : NULL;
+                lv_obj_t * last_it = (show_n > 0) ? reticle_distance_mgr_obj((uint8_t)(start + show_n - 1)) : NULL;
 
                 /* ====== 循环翻页：最后一页最后一条 UP -> 回到第一页显示开关；第一页显示开关 DOWN -> 跳到最后一页最后一条 ====== */
-                if (pages > 1) {
+                if(pages > 1) {
                     /* 计算最后一页的最后一条距离对象 */
                     uint8_t lstart = 0, lshow = 0;
                     dist_page_range((uint8_t)(pages - 1), cnt, &lstart, &lshow);
-                    lv_obj_t *last_page_last = (lshow > 0) ? reticle_distance_mgr_obj((uint8_t)(lstart + lshow - 1)) : NULL;
+                    lv_obj_t * last_page_last = (lshow > 0)
+                                                    ? reticle_distance_mgr_obj((uint8_t)(lstart + lshow - 1))
+                                                    : NULL;
 
                     /* UP=向后：在“最后一页最后一条距离”上再按 UP -> 回到第一页并聚焦显示开关 */
-                    if (key == LV_KEY_UP && last_page_last && focused == last_page_last) {
+                    if(key == LV_KEY_UP && last_page_last && focused == last_page_last) {
                         s_dist_page = 0;
                         focus_level2_reticle();
                         lv_group_focus_obj(ui_reticlerow1);
@@ -549,7 +589,7 @@ static void ev_level2_common_nav(lv_event_t *e) {
                     }
 
                     /* DOWN=向前：在“第一页显示开关”上再按 DOWN -> 跳到最后一页并聚焦最后一条距离 */
-                    if (key == LV_KEY_DOWN && focused == ui_reticlerow1 && last_page_last) {
+                    if(key == LV_KEY_DOWN && focused == ui_reticlerow1 && last_page_last) {
                         s_dist_page = (uint8_t)(pages - 1);
                         focus_level2_reticle();
                         /* 进入最后一页后，聚焦最后一条距离 */
@@ -559,30 +599,30 @@ static void ev_level2_common_nav(lv_event_t *e) {
                 }
 
                 /* UP=向后：在本页最后一条距离上再按 UP -> 下一页 */
-                if (key == LV_KEY_UP && last_it && focused == last_it) {
-                    if ((uint8_t)(s_dist_page + 1) < pages) {
+                if(key == LV_KEY_UP && last_it && focused == last_it) {
+                    if((uint8_t)(s_dist_page + 1) < pages) {
                         s_dist_page++;
                         focus_level2_reticle();
 
                         uint8_t nstart = 0, nshow = 0;
                         dist_page_range(s_dist_page, cnt, &nstart, &nshow);
-                        if (nshow > 0) lv_group_focus_obj(reticle_distance_mgr_obj(nstart));
+                        if(nshow > 0) lv_group_focus_obj(reticle_distance_mgr_obj(nstart));
                         return;
                     }
                 }
 
                 /* DOWN=向前：在本页第一条距离上再按 DOWN -> 上一页 */
-                if (key == LV_KEY_DOWN && first_it && focused == first_it) {
-                    if (s_dist_page > 0) {
+                if(key == LV_KEY_DOWN && first_it && focused == first_it) {
+                    if(s_dist_page > 0) {
                         s_dist_page--;
                         focus_level2_reticle();
 
                         uint8_t pstart = 0, pshow = 0;
                         dist_page_range(s_dist_page, cnt, &pstart, &pshow);
-                        if (pshow > 0) lv_group_focus_obj(reticle_distance_mgr_obj((uint8_t)(pstart + pshow - 1)));
+                        if(pshow > 0) lv_group_focus_obj(reticle_distance_mgr_obj((uint8_t)(pstart + pshow - 1)));
                         else {
                             /* 回到第一页但没有距离时，落在 Save */
-                            if (s_dist_page == 0) lv_group_focus_obj(ui_reticlerow8);
+                            if(s_dist_page == 0) lv_group_focus_obj(ui_reticlerow8);
                         }
                         return;
                     }
@@ -591,12 +631,12 @@ static void ev_level2_common_nav(lv_event_t *e) {
         }
 
         /* 默认焦点移动 */
-        if (key == LV_KEY_UP) lv_group_focus_next(keypad_group);
+        if(key == LV_KEY_UP) lv_group_focus_next(keypad_group);
         else lv_group_focus_prev(keypad_group);
         return;
     }
 
-    if (key == LV_KEY_ESC) {
+    if(key == LV_KEY_ESC) {
         reticle_feature_close();
         lv_obj_clear_state(ui_rowreticle, LV_STATE_USER_1);
         return;
@@ -604,35 +644,37 @@ static void ev_level2_common_nav(lv_event_t *e) {
 }
 
 // 显示开关（rowswitch）
-static void ev_visible(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_visible(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
-    if (key == LV_KEY_ENTER) {
+    if(key == LV_KEY_ENTER) {
         /* 全局显示开关：不随枪型变化 */
-        reticle_cfg_t *cfg = reticle_model_cfg();
+        reticle_cfg_t * cfg = reticle_model_cfg();
         cfg->visible = !cfg->visible;
 
         ui_set_rowswitch_checked(ui_reticlerow1, cfg->visible);
         hw_reticle_set_visible(cfg->visible);
         reticle_model_mark_dirty();
 
-        /* visible 改变后：更新二级菜单可聚焦范围（ON 解锁全部，OFF 只剩本行） */
-        focus_level2_reticle();
-        lv_group_focus_obj(ui_reticlerow1);
+        /* 需求变更：Show 开关与底下选项无关。
+         * 因此此处不再重建 group/禁用控件，仅切换显示状态即可。
+         */
     } else {
         ev_level2_common_nav(e);
     }
 }
 
 // 旋转开关（rowswitch）
-static void ev_rotate(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_rotate(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
-    if (key == LV_KEY_ENTER) {
+    if(key == LV_KEY_ENTER) {
         /* 全局旋转开关：不随枪型变化 */
-        reticle_cfg_t *cfg = reticle_model_cfg();
+        reticle_cfg_t * cfg = reticle_model_cfg();
         cfg->rotate = !cfg->rotate;
 
         ui_set_rowswitch_checked(ui_reticlerow2, cfg->rotate);
@@ -646,14 +688,15 @@ static void ev_rotate(lv_event_t *e) {
 }
 
 // Gun Type（rowlabel）：ENTER 进入编辑态，UP/DOWN 切换 G1~G10，ENTER 退出编辑态并加载对应枪型
-static void ev_gun_type(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_gun_type(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
 
     uint32_t key = lv_indev_get_key(lv_indev_active());
     bool editing = lv_obj_has_state(ui_reticlerow3, LV_STATE_USER_1);
 
-    if (key == LV_KEY_ENTER) {
-        if (!editing) {
+    if(key == LV_KEY_ENTER) {
+        if(!editing) {
             lv_obj_add_state(ui_reticlerow3, LV_STATE_USER_1);
         } else {
             // 退出编辑态：根据当前显示的 gun idx（已经更新到模型）重载 UI/距离列表
@@ -671,16 +714,16 @@ static void ev_gun_type(lv_event_t *e) {
         return;
     }
 
-    if (editing) {
+    if(editing) {
         // 在编辑态下：UP/DOWN 切换枪型（需求：切枪需刷新对应距离列表）
-        if (key == LV_KEY_UP || key == LV_KEY_DOWN) {
+        if(key == LV_KEY_UP || key == LV_KEY_DOWN) {
             // 先把当前枪型的距离列表同步回模型，避免切换时丢数据
             sync_distance_mgr_to_model();
 
             uint8_t g = reticle_model_get_cur_gun();
             /* 需求：UP 为“向后增加”，DOWN 为“向前减少” */
-            if (key == LV_KEY_UP) g = (uint8_t) ((g + 1) % RETICLE_GUN_COUNT);
-            else g = (uint8_t) ((g + RETICLE_GUN_COUNT - 1) % RETICLE_GUN_COUNT);
+            if(key == LV_KEY_UP) g = (uint8_t)((g + 1) % RETICLE_GUN_COUNT);
+            else g = (uint8_t)((g + RETICLE_GUN_COUNT - 1) % RETICLE_GUN_COUNT);
 
             reticle_model_set_cur_gun(g);
 
@@ -700,30 +743,31 @@ static void ev_gun_type(lv_event_t *e) {
 }
 
 // Style（rowlabel）：ENTER编辑态，UP/DOWN 切 S1~S10，实时生效并置dirty
-static void ev_style(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_style(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
     bool editing = lv_obj_has_state(ui_reticlerow4, LV_STATE_USER_1);
 
-    if (key == LV_KEY_ENTER) {
-        if (editing)
+    if(key == LV_KEY_ENTER) {
+        if(editing)
             lv_obj_clear_state(ui_reticlerow4, LV_STATE_USER_1);
         else lv_obj_add_state(ui_reticlerow4, LV_STATE_USER_1);
         return;
     }
 
-    if (editing) {
-        if (key == LV_KEY_UP || key == LV_KEY_DOWN) {
-            reticle_gun_cfg_t *gc = reticle_model_cur_gun_cfg();
+    if(editing) {
+        if(key == LV_KEY_UP || key == LV_KEY_DOWN) {
+            reticle_gun_cfg_t * gc = reticle_model_cur_gun_cfg();
             uint8_t s = gc->style;
-            if (s < 1 || s > RETICLE_STYLE_COUNT) s = 1;
+            if(s < 1 || s > RETICLE_STYLE_COUNT) s = 1;
             /* 需求：UP 向后增加，DOWN 向前减少 */
-            if (key == LV_KEY_UP) s = (uint8_t) (s % RETICLE_STYLE_COUNT + 1);
-            else s = (uint8_t) ((s + RETICLE_STYLE_COUNT - 2) % RETICLE_STYLE_COUNT + 1);
+            if(key == LV_KEY_UP) s = (uint8_t)(s % RETICLE_STYLE_COUNT + 1);
+            else s = (uint8_t)((s + RETICLE_STYLE_COUNT - 2) % RETICLE_STYLE_COUNT + 1);
 
             gc->style = s;
-            ui_set_rowlabel_value(ui_reticlerow4, "S%d", (int) s);
+            ui_set_rowlabel_value(ui_reticlerow4, "S%d", (int)s);
             hw_reticle_set_style(s);
             reticle_model_mark_dirty();
         }
@@ -734,30 +778,31 @@ static void ev_style(lv_event_t *e) {
 }
 
 // Color（rowlabel）：ENTER编辑态，UP/DOWN 切 C1~C10，实时生效并置dirty
-static void ev_color(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_color(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
     bool editing = lv_obj_has_state(ui_reticlerow5, LV_STATE_USER_1);
 
-    if (key == LV_KEY_ENTER) {
-        if (editing)
+    if(key == LV_KEY_ENTER) {
+        if(editing)
             lv_obj_clear_state(ui_reticlerow5, LV_STATE_USER_1);
         else lv_obj_add_state(ui_reticlerow5, LV_STATE_USER_1);
         return;
     }
 
-    if (editing) {
-        if (key == LV_KEY_UP || key == LV_KEY_DOWN) {
-            reticle_gun_cfg_t *gc = reticle_model_cur_gun_cfg();
+    if(editing) {
+        if(key == LV_KEY_UP || key == LV_KEY_DOWN) {
+            reticle_gun_cfg_t * gc = reticle_model_cur_gun_cfg();
             uint8_t c = gc->color;
-            if (c < 1 || c > RETICLE_COLOR_COUNT) c = 1;
+            if(c < 1 || c > RETICLE_COLOR_COUNT) c = 1;
             /* 需求：UP 向后增加，DOWN 向前减少 */
-            if (key == LV_KEY_UP) c = (uint8_t) (c % RETICLE_COLOR_COUNT + 1);
-            else c = (uint8_t) ((c + RETICLE_COLOR_COUNT - 2) % RETICLE_COLOR_COUNT + 1);
+            if(key == LV_KEY_UP) c = (uint8_t)(c % RETICLE_COLOR_COUNT + 1);
+            else c = (uint8_t)((c + RETICLE_COLOR_COUNT - 2) % RETICLE_COLOR_COUNT + 1);
 
             gc->color = c;
-            ui_set_rowlabel_value(ui_reticlerow5, "C%d", (int) c);
+            ui_set_rowlabel_value(ui_reticlerow5, "C%d", (int)c);
             hw_reticle_set_color(c);
             reticle_model_mark_dirty();
         }
@@ -768,8 +813,9 @@ static void ev_color(lv_event_t *e) {
 }
 
 // Reset：仅保留一条距离=100，且零位重置到中心点；同时 style/color 重置为 S1/C1（可按你产品修改）
-static void do_reticle_reset(void) {
-    reticle_gun_cfg_t *gc = reticle_model_cur_gun_cfg();
+static void do_reticle_reset(void)
+{
+    reticle_gun_cfg_t * gc = reticle_model_cur_gun_cfg();
 
     gc->style = 1;
     gc->color = 1;
@@ -789,8 +835,8 @@ static void do_reticle_reset(void) {
     reticle_distance_mgr_load_from_cfg(gc, ev_distance_item);
 
     // 刷新 UI 行显示
-    ui_set_rowlabel_value(ui_reticlerow4, "S%d", (int) gc->style);
-    ui_set_rowlabel_value(ui_reticlerow5, "C%d", (int) gc->color);
+    ui_set_rowlabel_value(ui_reticlerow4, "S%d", (int)gc->style);
+    ui_set_rowlabel_value(ui_reticlerow5, "C%d", (int)gc->color);
 
     reticle_model_mark_dirty();
     apply_gun_cfg_to_hw();
@@ -800,36 +846,44 @@ static void do_reticle_reset(void) {
     lv_group_focus_obj(ui_reticlerow6);
 }
 
-static void ev_reset(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_reset(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
-    if (key == LV_KEY_ENTER) do_reticle_reset();
+    if(key == LV_KEY_ENTER) do_reticle_reset();
     else ev_level2_common_nav(e);
 }
 
 // Add Distance（rowenter）
-static void ev_add_distance(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_add_distance(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
-    if (key == LV_KEY_ENTER) {
+    if(key == LV_KEY_ENTER) {
         /* Add Distance：弹窗保持 SquareLine 默认位置；弹窗期间高亮 Add Distance 行 */
-        distance_editor_open_ex(100, ui_reticlerow7, false,
-                                on_add_distance_ok, NULL,
-                                NULL, NULL,
-                                restore_to_level2, NULL);
+        distance_editor_open_ex(100,
+                                ui_reticlerow7,
+                                false,
+                                on_add_distance_ok,
+                                NULL,
+                                NULL,
+                                NULL,
+                                restore_to_level2,
+                                NULL);
     } else {
         ev_level2_common_nav(e);
     }
 }
 
 // Save（rowlabel）：弹 ui_savereticle
-static void ev_save(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_save(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
-    if (key == LV_KEY_ENTER) {
+    if(key == LV_KEY_ENTER) {
         dialog_open(ui_savereticle, DLG_SAVE_ROW, ui_reticlerow8);
     } else {
         ev_level2_common_nav(e);
@@ -837,66 +891,76 @@ static void ev_save(lv_event_t *e) {
 }
 
 /* ===================== 3级：Calibration/Primacy/Modify/Delete ===================== */
-static void ev_level3(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_level3(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
 
-    lv_obj_t *obj = lv_event_get_user_data(e);
+    lv_obj_t * obj = lv_event_get_user_data(e);
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
     /* 需求：UP 向后(下一个)，DOWN 向前(上一个) */
-    if (key == LV_KEY_UP) {
+    if(key == LV_KEY_UP) {
         lv_group_focus_next(keypad_group);
         return;
     }
-    if (key == LV_KEY_DOWN) {
+    if(key == LV_KEY_DOWN) {
         lv_group_focus_prev(keypad_group);
         return;
     }
 
-    if (key == LV_KEY_ESC) {
+    if(key == LV_KEY_ESC) {
         // 返回二级
         lv_obj_add_flag(ui_contmenudistance, LV_OBJ_FLAG_HIDDEN);
         lv_obj_add_flag(ui_contmenucalibration, LV_OBJ_FLAG_HIDDEN);
         // 退出距离编辑：清除距离条目 USER_1（若为优先距离则保留 USER_2）
         set_selected_distance_editing(false);
         focus_level2_reticle();
-        if (reticle_distance_mgr_count() > 0)
+        if(reticle_distance_mgr_count() > 0)
             lv_group_focus_obj(reticle_distance_mgr_obj(reticle_distance_mgr_get_selected()));
         else
             lv_group_focus_obj(ui_reticlerow7);
         return;
     }
 
-    if (key != LV_KEY_ENTER) return;
+    if(key != LV_KEY_ENTER) return;
 
     uint8_t sel = reticle_distance_mgr_get_selected();
-    reticle_distance_entry_t *en = reticle_distance_mgr_entry(sel);
-    if (!en) return;
+    reticle_distance_entry_t * en = reticle_distance_mgr_entry(sel);
+    if(!en) return;
 
-    if (obj == ui_distancerow1) {
+    if(obj == ui_distancerow1) {
         show_level4();
         return;
     }
 
-    if (obj == ui_distancerow2) {
+    if(obj == ui_distancerow2) {
         reticle_distance_mgr_set_primary(sel);
         reticle_model_mark_dirty();
         sync_distance_mgr_to_model();
         return;
     }
 
-    if (obj == ui_distancerow3) {
+    if(obj == ui_distancerow3) {
         s_modify_old_idx = sel;
         /* Modify Distance：弹窗靠右显示；弹窗期间高亮 Modify Distance 行 */
-        distance_editor_open_ex(en->dist, ui_distancerow3, true,
-                                on_modify_ok, NULL,
-                                on_modify_cancel, NULL,
-                                NULL, NULL);
+        distance_editor_open_ex(en->dist,
+                                ui_distancerow3,
+                                true,
+                                on_modify_ok,
+                                NULL,
+                                on_modify_cancel,
+                                NULL,
+                                NULL,
+                                NULL);
         return;
     }
 
-    if (obj == ui_distancerow4) {
-        reticle_distance_mgr_delete(sel);
+    if(obj == ui_distancerow4) {
+        /* 需求：每个枪型至少保留 1 个距离标签；仅剩 1 个时禁止删除 */
+        if(!reticle_distance_mgr_delete(sel)) {
+            /* 删除失败：保持在当前行即可 */
+            return;
+        }
         reticle_model_mark_dirty();
         sync_distance_mgr_to_model();
 
@@ -908,7 +972,7 @@ static void ev_level3(lv_event_t *e) {
         set_selected_distance_editing(false);
 
         focus_level2_reticle();
-        if (reticle_distance_mgr_count() > 0) {
+        if(reticle_distance_mgr_count() > 0) {
             lv_group_focus_obj(reticle_distance_mgr_obj(reticle_distance_mgr_get_selected()));
         } else {
             lv_group_focus_obj(ui_reticlerow7);
@@ -918,10 +982,11 @@ static void ev_level3(lv_event_t *e) {
 }
 
 /* ===================== 4级：X/Y/Zero/ClearReset/Zoom/Freeze ===================== */
-static void do_zero_clear(void) {
+static void do_zero_clear(void)
+{
     uint8_t idx = reticle_distance_mgr_get_selected();
-    reticle_distance_entry_t *en = reticle_distance_mgr_entry(idx);
-    if (!en) return;
+    reticle_distance_entry_t * en = reticle_distance_mgr_entry(idx);
+    if(!en) return;
 
     en->calib.x = 0;
     en->calib.y = 0;
@@ -933,54 +998,63 @@ static void do_zero_clear(void) {
     apply_gun_cfg_to_hw();
 }
 
-static void do_zero_reset(void) {
+static void do_zero_reset(void)
+{
     // 需求表动作同 Clear：X/Y 清 0（后续如你要区分相对/绝对，这里可扩展）
     do_zero_clear();
 }
 
-static void ev_level4(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_level4(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
 
-    lv_obj_t *obj = lv_event_get_user_data(e);
+    lv_obj_t * obj = lv_event_get_user_data(e);
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
     uint8_t idx = reticle_distance_mgr_get_selected();
-    reticle_distance_entry_t *en = reticle_distance_mgr_entry(idx);
-    if (!en) return;
+    reticle_distance_entry_t * en = reticle_distance_mgr_entry(idx);
+    if(!en) return;
 
     bool editing = lv_obj_has_state(obj, LV_STATE_USER_1);
 
-    if (key == LV_KEY_ESC) {
+    if(key == LV_KEY_ESC) {
         lv_obj_clear_state(obj, LV_STATE_USER_1);
         lv_obj_add_flag(ui_contmenucalibration, LV_OBJ_FLAG_HIDDEN);
+
+        /* 退出四级：恢复前面三个菜单可见 */
+        lv_obj_clear_flag(ui_contpage2, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(ui_lbltitle, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(ui_contmenureticle, LV_OBJ_FLAG_HIDDEN);
+        lv_obj_clear_flag(ui_contmenudistance, LV_OBJ_FLAG_HIDDEN);
+
         focus_level3_distance();
         lv_group_focus_obj(ui_distancerow1);
         return;
     }
 
-    if (!editing) {
+    if(!editing) {
         /* 需求：UP 向后(下一个)，DOWN 向前(上一个) */
-        if (key == LV_KEY_UP) {
+        if(key == LV_KEY_UP) {
             lv_group_focus_next(keypad_group);
             return;
         }
-        if (key == LV_KEY_DOWN) {
+        if(key == LV_KEY_DOWN) {
             lv_group_focus_prev(keypad_group);
             return;
         }
     }
 
-    if (key == LV_KEY_ENTER) {
+    if(key == LV_KEY_ENTER) {
         // X/Y/Zoom：切换编辑态
-        if (obj == ui_calibrationrow1 || obj == ui_calibrationrow2 || obj == ui_calibrationrow4) {
-            if (editing)
+        if(obj == ui_calibrationrow1 || obj == ui_calibrationrow2 || obj == ui_calibrationrow4) {
+            if(editing)
                 lv_obj_clear_state(obj, LV_STATE_USER_1);
             else lv_obj_add_state(obj, LV_STATE_USER_1);
             return;
         }
 
         // Zero Clear/Reset：弹框选择并确认（需求表 10/11：弹框确认后清零）
-        if (obj == ui_calibrationrow3) {
+        if(obj == ui_calibrationrow3) {
             ensure_zero_dialog();
             // 文案可改为中文
             lv_label_set_text(dialog_text_label(s_dlg_zero), "Clear or Reset zero?");
@@ -991,7 +1065,7 @@ static void ev_level4(lv_event_t *e) {
         }
 
         // Freeze：切换开关
-        if (obj == ui_calibrationrow5) {
+        if(obj == ui_calibrationrow5) {
             en->calib.freeze = !en->calib.freeze;
             reticle_distance_mgr_refresh_calib_freeze_ui(idx);
             reticle_model_mark_dirty();
@@ -1001,28 +1075,28 @@ static void ev_level4(lv_event_t *e) {
         }
     }
 
-    if (editing) {
-        if (obj == ui_calibrationrow1) {
-            if (key == LV_KEY_UP && en->calib.x < RETICLE_X_MAX) en->calib.x++;
-            if (key == LV_KEY_DOWN && en->calib.x > RETICLE_X_MIN) en->calib.x--;
+    if(editing) {
+        if(obj == ui_calibrationrow1) {
+            if(key == LV_KEY_UP && en->calib.x < RETICLE_X_MAX) en->calib.x++;
+            if(key == LV_KEY_DOWN && en->calib.x > RETICLE_X_MIN) en->calib.x--;
             reticle_distance_mgr_refresh_calib_x_ui(idx);
             reticle_model_mark_dirty();
             sync_distance_mgr_to_model();
             apply_gun_cfg_to_hw();
             return;
         }
-        if (obj == ui_calibrationrow2) {
-            if (key == LV_KEY_UP && en->calib.y < RETICLE_Y_MAX) en->calib.y++;
-            if (key == LV_KEY_DOWN && en->calib.y > RETICLE_Y_MIN) en->calib.y--;
+        if(obj == ui_calibrationrow2) {
+            if(key == LV_KEY_UP && en->calib.y < RETICLE_Y_MAX) en->calib.y++;
+            if(key == LV_KEY_DOWN && en->calib.y > RETICLE_Y_MIN) en->calib.y--;
             reticle_distance_mgr_refresh_calib_y_ui(idx);
             reticle_model_mark_dirty();
             sync_distance_mgr_to_model();
             apply_gun_cfg_to_hw();
             return;
         }
-        if (obj == ui_calibrationrow4) {
-            if (key == LV_KEY_UP && en->calib.zoom < RETICLE_ZOOM_MAX) en->calib.zoom++;
-            if (key == LV_KEY_DOWN && en->calib.zoom > RETICLE_ZOOM_MIN) en->calib.zoom--;
+        if(obj == ui_calibrationrow4) {
+            if(key == LV_KEY_UP && en->calib.zoom < RETICLE_ZOOM_MAX) en->calib.zoom++;
+            if(key == LV_KEY_DOWN && en->calib.zoom > RETICLE_ZOOM_MIN) en->calib.zoom--;
             reticle_distance_mgr_refresh_calib_zoom_ui(idx);
             reticle_model_mark_dirty();
             sync_distance_mgr_to_model();
@@ -1033,39 +1107,40 @@ static void ev_level4(lv_event_t *e) {
 }
 
 /* ===================== dialog：OK/Cancel 共用事件 ===================== */
-static void ev_dialog_button(lv_event_t *e) {
-    if (lv_event_get_code(e) != LV_EVENT_KEY) return;
+static void ev_dialog_button(lv_event_t * e)
+{
+    if(lv_event_get_code(e) != LV_EVENT_KEY) return;
 
-    lv_obj_t *btn = lv_event_get_target(e);
+    lv_obj_t * btn = lv_event_get_target(e);
     uint32_t key = lv_indev_get_key(lv_indev_active());
 
-    lv_obj_t *dlg = NULL;
-    if (s_dlg_kind == DLG_SAVE_ROW) dlg = ui_savereticle;
-    else if (s_dlg_kind == DLG_EXIT_PROMPT) dlg = ui_savechanges;
-    else if (s_dlg_kind == DLG_ZERO_ACTION) dlg = s_dlg_zero;
+    lv_obj_t * dlg = NULL;
+    if(s_dlg_kind == DLG_SAVE_ROW) dlg = ui_savereticle;
+    else if(s_dlg_kind == DLG_EXIT_PROMPT) dlg = ui_savechanges;
+    else if(s_dlg_kind == DLG_ZERO_ACTION) dlg = s_dlg_zero;
     else return;
 
-    if (key == LV_KEY_UP) {
+    if(key == LV_KEY_UP) {
         lv_group_focus_next(keypad_group);
         return;
     }
-    if (key == LV_KEY_DOWN) {
+    if(key == LV_KEY_DOWN) {
         lv_group_focus_prev(keypad_group);
         return;
     }
 
-    if (key == LV_KEY_ESC) {
+    if(key == LV_KEY_ESC) {
         dialog_close(dlg);
         return;
     }
 
-    if (key != LV_KEY_ENTER) return;
+    if(key != LV_KEY_ENTER) return;
 
     bool is_ok = (btn == dialog_ok(dlg));
 
-    if (s_dlg_kind == DLG_SAVE_ROW) {
+    if(s_dlg_kind == DLG_SAVE_ROW) {
         // Save 行：OK 保存但不退出；Cancel 不保存
-        if (is_ok) {
+        if(is_ok) {
             sync_distance_mgr_to_model();
             reticle_model_nv_save(reticle_model_cfg());
             reticle_model_clear_dirty();
@@ -1074,9 +1149,9 @@ static void ev_dialog_button(lv_event_t *e) {
         return;
     }
 
-    if (s_dlg_kind == DLG_EXIT_PROMPT) {
+    if(s_dlg_kind == DLG_EXIT_PROMPT) {
         // 退出提示：OK 保存并退出；Cancel 不保存也退出
-        if (is_ok) {
+        if(is_ok) {
             sync_distance_mgr_to_model();
             reticle_model_nv_save(reticle_model_cfg());
             reticle_model_clear_dirty();
@@ -1096,9 +1171,9 @@ static void ev_dialog_button(lv_event_t *e) {
         return;
     }
 
-    if (s_dlg_kind == DLG_ZERO_ACTION) {
+    if(s_dlg_kind == DLG_ZERO_ACTION) {
         // OK=Clear, Cancel=Reset（两者都“确认”）
-        if (is_ok) do_zero_clear();
+        if(is_ok) do_zero_clear();
         else do_zero_reset();
         dialog_close(dlg);
         return;
@@ -1106,7 +1181,8 @@ static void ev_dialog_button(lv_event_t *e) {
 }
 
 /* ===================== 对外接口 ===================== */
-void reticle_feature_init(void) {
+void reticle_feature_init(void)
+{
     hide_all_submenus();
 
     // 确保弹框隐藏
@@ -1130,7 +1206,8 @@ void reticle_feature_init(void) {
     s_restore_focus = NULL;
 }
 
-void reticle_feature_bind_events(void) {
+void reticle_feature_bind_events(void)
+{
     // 二级
     lv_obj_add_event_cb(ui_reticlerow1, ev_visible, LV_EVENT_ALL, ui_reticlerow1);
     lv_obj_add_event_cb(ui_reticlerow2, ev_rotate, LV_EVENT_ALL, ui_reticlerow2);
@@ -1162,14 +1239,15 @@ void reticle_feature_bind_events(void) {
     lv_obj_add_event_cb(dialog_ok(ui_savechanges), ev_dialog_button, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(dialog_cancel(ui_savechanges), ev_dialog_button, LV_EVENT_ALL, NULL);
 
-    if (s_dlg_zero) {
+    if(s_dlg_zero) {
         lv_obj_add_event_cb(dialog_ok(s_dlg_zero), ev_dialog_button, LV_EVENT_ALL, NULL);
         lv_obj_add_event_cb(dialog_cancel(s_dlg_zero), ev_dialog_button, LV_EVENT_ALL, NULL);
     }
 }
 
-void reticle_feature_open(void) {
-    if (s_opened) return;
+void reticle_feature_open(void)
+{
+    if(s_opened) return;
     s_opened = true;
 
     // 每次打开都从模型重建 UI（确保动态距离/枪型切换后一致）
@@ -1184,17 +1262,18 @@ void reticle_feature_open(void) {
     focus_level2_reticle();
 
     // 默认选中距离列表第一条（仅用于高亮/主距标识），默认焦点在“显示开关”
-    if (reticle_distance_mgr_count() > 0) {
+    if(reticle_distance_mgr_count() > 0) {
         reticle_distance_mgr_set_selected(0);
     }
     lv_group_focus_obj(ui_reticlerow1);
 }
 
-void reticle_feature_close(void) {
+void reticle_feature_close(void)
+{
     // 弹框显示中不响应重复关闭
-    if (s_dlg_kind != DLG_NONE) return;
+    if(s_dlg_kind != DLG_NONE) return;
 
-    if (!s_opened) {
+    if(!s_opened) {
         hide_all_submenus();
         focus_page2_main_only();
         return;
@@ -1207,7 +1286,7 @@ void reticle_feature_close(void) {
     set_selected_distance_editing(false);
 
     // 需求表：返回至一级菜单时若检测到有修改则提示保存
-    if (reticle_model_is_dirty()) {
+    if(reticle_model_is_dirty()) {
         dialog_open(ui_savechanges, DLG_EXIT_PROMPT, ui_rowreticle);
         return;
     }
@@ -1217,4 +1296,7 @@ void reticle_feature_close(void) {
     focus_page2_main_only();
 }
 
-bool reticle_feature_is_open(void) { return s_opened; }
+bool reticle_feature_is_open(void)
+{
+    return s_opened;
+}
