@@ -8,25 +8,50 @@
 
 #ifdef __cplusplus
 extern "C" {
+
+
+
 #endif
 
-    void ui_comp_cmpdatetimebar_create_hook(lv_obj_t * comp);
-    void ui_comp_cmpfocuscell_create_hook(lv_obj_t * comp);
-    void ui_comp_cmpmodetoggle_create_hook(lv_obj_t * comp);
-    void ui_comp_cmptableheader_create_hook(lv_obj_t * comp);
-    void ui_comp_cmptablerow4col_create_hook(lv_obj_t * comp);
-    void ui_comp_dialogeg_create_hook(lv_obj_t * comp);
-    void ui_comp_distance_create_hook(lv_obj_t * comp);
-    void ui_comp_distancelabel_create_hook(lv_obj_t * comp);
-    void ui_comp_div__create_hook(lv_obj_t * comp);
-    void ui_comp_num_create_hook(lv_obj_t * comp);
-    void ui_comp_paneleg_create_hook(lv_obj_t * comp);
-    void ui_comp_rowenter_create_hook(lv_obj_t * comp);
-    void ui_comp_rowitem_create_hook(lv_obj_t * comp);
-    void ui_comp_rowitem1_create_hook(lv_obj_t * comp);
-    void ui_comp_rowlabel_create_hook(lv_obj_t * comp);
-    void ui_comp_rowswitch_create_hook(lv_obj_t * comp);
+void ui_comp_cmpdatetimebar_create_hook(lv_obj_t * comp);
 
+void ui_comp_cmpfocuscell_create_hook(lv_obj_t * comp);
+
+void ui_comp_cmpmodetoggle_create_hook(lv_obj_t * comp);
+
+void ui_comp_cmptableheader_create_hook(lv_obj_t * comp);
+
+void ui_comp_cmptablerow4col_create_hook(lv_obj_t * comp);
+
+void ui_comp_dialogeg_create_hook(lv_obj_t * comp);
+
+void ui_comp_distance_create_hook(lv_obj_t * comp);
+
+void ui_comp_distancelabel_create_hook(lv_obj_t * comp);
+
+void ui_comp_div__create_hook(lv_obj_t * comp);
+
+void ui_comp_num_create_hook(lv_obj_t * comp);
+
+void ui_comp_paneleg_create_hook(lv_obj_t * comp);
+
+void ui_comp_rowenter_create_hook(lv_obj_t * comp);
+
+void ui_comp_rowitem_create_hook(lv_obj_t * comp);
+
+void ui_comp_rowitem1_create_hook(lv_obj_t * comp);
+
+void ui_comp_rowlabel_create_hook(lv_obj_t * comp);
+
+void ui_comp_rowswitch_create_hook(lv_obj_t * comp);
+
+void ui_comp_BTN_create_hook(lv_obj_t * comp);
+
+void ui_comp_DateItem_create_hook(lv_obj_t * comp);
+
+void ui_comp_LISTLABEL_create_hook(lv_obj_t * comp);
+
+void ui_comp_ListItem_create_hook(lv_obj_t * comp);
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

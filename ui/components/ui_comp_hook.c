@@ -68,3 +68,19 @@ void ui_comp_distance_create_hook(lv_obj_t * comp)
 void ui_comp_distancelabel_create_hook(lv_obj_t * comp)
 {
 }
+
+void ui_comp_DateItem_create_hook(lv_obj_t * comp)
+{
+}
+
+void ui_comp_BTN_create_hook(lv_obj_t * comp)
+{
+}
+
+void ui_comp_LISTLABEL_create_hook(lv_obj_t * comp)
+{
+}
+
+void ui_comp_ListItem_create_hook(lv_obj_t * comp)
+{
+}
