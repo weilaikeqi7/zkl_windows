@@ -9,6 +9,8 @@
 #ifdef __cplusplus
 extern "C" {
 
+
+
 #endif
 
 #include "lvgl/lvgl.h"
@@ -25,6 +27,7 @@ extern "C" {
 #include "user/font.h"
 #include "user/play_handle.h"
 #include "user/timer_handle.h"
+#include "user/types.h"
 #include <time.h>
 ///////////////////// SCREENS ////////////////////
 
@@ -41,24 +44,26 @@ extern lv_obj_t * ui____initial_actions0;
 #define IMAGES_PATH "A:E:/ZKL-75-6LC/zkl_windows/ui/images/"
 #define FONTS_PATH "E:/ZKL-75-6LC/zkl_windows/ui/fonts/"
 // FONTS
-extern lv_font_t* ui_font_WebnarItalic24;
-extern lv_font_t* ui_font_WebnarItalic32;
-extern lv_font_t* ui_font_WebnarMedium15;
-extern lv_font_t* ui_font_WebnarMedium18;
-extern lv_font_t* ui_font_WebnarRegular13;
-extern lv_font_t* ui_font_WebnarRegular15;
-extern lv_font_t* ui_font_WebnarRegular18;
-extern lv_font_t* ui_font_WebnarRegular20;
-extern lv_font_t* ui_font_WebnarRegular24;
-extern lv_font_t* ui_font_WebnarSemiBold12;
-extern lv_font_t* ui_font_WebnarSemiBold18;
-extern lv_font_t* ui_font_WebnarSemiBold24;
+extern lv_font_t * ui_font_WebnarItalic24;
+extern lv_font_t * ui_font_WebnarItalic32;
+extern lv_font_t * ui_font_WebnarMedium15;
+extern lv_font_t * ui_font_WebnarMedium18;
+extern lv_font_t * ui_font_WebnarRegular13;
+extern lv_font_t * ui_font_WebnarRegular15;
+extern lv_font_t * ui_font_WebnarRegular18;
+extern lv_font_t * ui_font_WebnarRegular20;
+extern lv_font_t * ui_font_WebnarRegular24;
+extern lv_font_t * ui_font_WebnarSemiBold12;
+extern lv_font_t * ui_font_WebnarSemiBold18;
+extern lv_font_t * ui_font_WebnarSemiBold24;
 
 extern uint8_t g_my_keypad_btn_points[4];
 extern lv_indev_t * indev_keypad;
 extern lv_group_t * keypad_group;
+
 // UI INIT
 void ui_init(void);
+
 void ui_destroy(void);
 
 #ifdef __cplusplus

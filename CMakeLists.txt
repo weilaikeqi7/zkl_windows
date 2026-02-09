@@ -16,26 +16,28 @@ include_directories(
 FILE(GLOB_RECURSE LVGL_Sources CONFIGURE_DEPENDS lvgl/*.c)
 FILE(GLOB_RECURSE UI_Sources CONFIGURE_DEPENDS ui/*.c ui/*.cpp)
 
-set(CMAKE_GENERATOR "MinGW Makefiles")
-
 set(SDL_FOLDER sdl2-dev-x86_64)
 set(CMAKE_FIND_ROOT_PATH ${SDL_FOLDER})
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-set(CMAKE_BUILD_RPATH "${SDL_FOLDER}/include")
-set(CMAKE_INSTALL_RPATH ${CMAKE_BUILD_RPATH})
-
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(FREETYPE REQUIRED freetype2)
 
-include_directories(${PROJECT_SOURCE_DIR}/${SDL_FOLDER}/include ${FREETYPE_INCLUDE_DIRS})
+include_directories(
+        ${PROJECT_SOURCE_DIR}/${SDL_FOLDER}/include
+        ${FREETYPE_INCLUDE_DIRS}
+)
 
 FILE(GLOB_RECURSE SDL_Sources CONFIGURE_DEPENDS ${SDL_FOLDER})
 
-add_executable(${PROJECT_NAME} main.c ${LVGL_Sources} ${SDL_Sources} ${UI_Sources})
+add_executable(${PROJECT_NAME} main.c ${LVGL_Sources} ${UI_Sources})
 
-target_link_libraries(${PROJECT_NAME} -L"${PROJECT_SOURCE_DIR}/${SDL_FOLDER}/lib" SDL2 ${FREETYPE_LIBRARIES})
-
-
+target_link_libraries(${PROJECT_NAME}
+        -L"${PROJECT_SOURCE_DIR}/${SDL_FOLDER}/lib"
+        SDL2
+        ${FREETYPE_LIBRARIES}
+        m
+        pthread
+)

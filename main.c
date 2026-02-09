@@ -16,7 +16,7 @@
 /*********************
  *      DEFINES
  *********************/
-
+GlobalParameters global_parameters;
 /**********************
  *      TYPEDEFS
  **********************/
@@ -24,7 +24,9 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static void hal_init(void);
+static
+
+void hal_init(void);
 
 /**********************
  *  STATIC VARIABLES
@@ -62,7 +64,8 @@ int main(int argc, char ** argv)
 {
     (void)argc; /*Unused*/
     (void)argv; /*Unused*/
-
+    global_parameters.sendKey = 2027;
+    global_parameters.recvKey = 2026;
     /*Initialize LVGL*/
     lv_init();
 
