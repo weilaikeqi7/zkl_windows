@@ -41,8 +41,8 @@ extern "C" {
 // EVENTS
 extern lv_obj_t * ui____initial_actions0;
 
-#define IMAGES_PATH "A:E:/ZKL-75-6LC/zkl_windows/ui/images/"
-#define FONTS_PATH "E:/ZKL-75-6LC/zkl_windows/ui/fonts/"
+#define IMAGES_PATH "A:D:/E/ZKL-75-6LC/zkl_windows/ui/images/"
+#define FONTS_PATH "D:/E/ZKL-75-6LC/zkl_windows/ui/fonts/"
 // FONTS
 extern lv_font_t * ui_font_WebnarItalic24;
 extern lv_font_t * ui_font_WebnarItalic32;
